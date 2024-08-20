@@ -14,9 +14,10 @@ class Menu(BasisUI, BasisTreeNode):
                  name: str, 
                  x: int, 
                  y: int, 
+                 chr:str,
                  comment: str | None = None) -> None:
         
-        super().__init__(name, len(MENU_OBJ), "men", x, y, comment)
+        super().__init__(name, len(MENU_OBJ), "men", chr, x, y, comment)
         super().__father_node__()
 
         self.btns:list[Buttons]=[]
@@ -24,6 +25,8 @@ class Menu(BasisUI, BasisTreeNode):
 
         self.__set_meta__("panel", self.panel)
 
-        self._se
+        self._set_frame_square_2d_(self.vec)
+        if DEBUG_MODE:
+            self._set_frame_num_square_2d_(self.vec[0])
         MENU_OBJ.append(self)
 

@@ -7,7 +7,9 @@ def checker_coord(line:list, limit:list):
         raise VectorIncorrect(line)
     if not len(line) == VIEWPORT_LIMIT:
         raise CoordNotFound(line)
-    if not line[0] > limit[0] or not line[1] > limit[1]:
+    if limit == "ex":
+        return
+    if (not line[0] > limit[0]) or (not line[1] > limit[1]):
         raise CoordExced(line, limit)
 
 class BasisViewPort(BasisNode):
@@ -29,7 +31,7 @@ class BasisViewPort(BasisNode):
         """
         self.pre_view = ""
     
-    def _get_pre_view_(self, isPrint:bool=True) -> str:
+    def get_pre_view(self, isPrint:bool=True) -> str:
         """Imprime la variable 'pre_view' y la retorna
 
         Args:
@@ -49,7 +51,7 @@ class BasisViewPort(BasisNode):
         """
         self.square = []
 
-    def _get_square_(self) -> list:
+    def get_square(self) -> list:
         """retorno el actual 'square'
 
         Returns:

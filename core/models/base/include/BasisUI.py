@@ -5,10 +5,10 @@ from ..constant.BasisSquare import *
 from ..tools.ScreenTools import *
 
 class BasisUI(BasisSquare, BasisViewPort):
-    def __init__(self, name: str, id: int, abs: str, x:int, y:int, comment: str | None = None) -> None:
+    def __init__(self, name: str, id: int, abs: str, chr:str, x:int, y:int, comment: str | None = None) -> None:
         super().__init__(name, id, abs, comment)
         super().__viewport__()
-        super().__set_vec_2d__(x, y)
+        super().__set_vec_2d__(chr, x, y)
 
     def create_text(self,
                     text:str,

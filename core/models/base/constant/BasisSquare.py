@@ -59,29 +59,37 @@ class BasisSquare(BasisViewPort):
         self.transform = [size_x, size_y, size_z]
         self.__set_meta__("transform", self.transform)
     
-    def __set_vec_2d__(self, x:int, y:int):
+    def __set_vec_2d__(self, chr:str, x:int, y:int):
         """Otorga al objeto una representación de vector en 2D
 
         Args:
+            chr (str): caracter empleado
             x (int): posición en X
             y (int): posición en Y
         """
+        self.character = chr
+
         self.vec = [x, y]
         self._tmp_vec_ = [x, y]
 
+        self.__set_meta__("chr", self.character)
         self.__set_meta__("vec", self.vec)
 
-    def __set_vec_3d__(self, x:int, y:int, z:int):
+    def __set_vec_3d__(self, chr:str, x:int, y:int, z:int):
         """Otorga al objeto una representación de vector en 3D
 
         Args:
+            chr (str): caracter empleado
             x (int): posición en X
             y (int): posición en Y
             z (int): posición en Z
         """
+        self.character = chr
+
         self.vec = [x, y, z]
         self._tmp_vec_ = [x, y, z]
 
+        self.__set_meta__("chr", self.character)
         self.__set_meta__("vec", self.vec)
 
     def _set_line_square_2d_(self):
@@ -152,14 +160,23 @@ class BasisSquare(BasisViewPort):
     def _set_frame_square_2d_(self, coords:list[int, int],
                              single:Literal["last", "start", "none"]="none",
                              chr="") -> None | str:
-        checker_coord(coords)
+        """Genera un cuadrado 
+
+        Args:
+            coords (list[int, int]): determinar el largo y alto
+            single (Literal[&quot;last&quot;, &quot;start&quot;, &quot;none&quot;], optional): determina si retorna una linea o el cuadrado. Defaults to "none".
+            chr (str, optional): simbolo base. Defaults to "".
+
+        Returns:
+            None | str: linea o vacio
+        """
+        checker_coord(coords, "ex")
 
         temp = self.character
         if not chr == "":
             self.character = chr
         else:
             del temp
-
         for y in range(coords[1]):
             if y == 0 or y == (coords[1]-1):
                 temp_line = f"{self.character}" * coords[0]
