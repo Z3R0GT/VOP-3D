@@ -7,6 +7,7 @@ class CoordNotFound(ValueError):
 
         super().__init__(self.message, *args)
 
+
 class CoordExced(ValueError):
     """Raised when some coord is out of the limit"""
     def __init__(self, foo, local, *args: object) -> None:
@@ -17,11 +18,37 @@ class CoordExced(ValueError):
         super().__init__(self.message, *args)
 
 
-class VectorIncorrect(TypeError):
+class IncorrectVector(TypeError):
     """Raised when the vector is not a list"""
     def __init__(self, foo, *args: object) -> None:
         self.message = f"Need a list, not {type(foo)}"
         self.foo = foo
         
         super().__init__(self.message, *args)
+ 
+
+class IncorrectTypeNode(TypeError):
+    """Raised when a node isn't correct"""
+    def __init__(self, foo, *args: object) -> None:
+        self.message = f"The object is {type(foo)} ({foo.name}) is not compatible"
+        self.foo = foo
         
+        super().__init__(self.message, *args)
+
+
+class IsNotAChild(AttributeError):
+    """Raised when a node isn't a child"""
+    def __init__(self, foo, *args: object) -> None:
+        self.message = f"The object {foo.name} isn't a child or cannot be a child"
+        self.foo = foo
+        
+        super().__init__(self.message, *args)
+
+
+class IsNotAFather(AttributeError):
+    """Raised when a node isn't a father"""
+    def __init__(self, foo, *args: object) -> None:
+        self.message = f"The object {foo.name} isn't a father or cannot be a father"
+        self.foo = foo
+        
+        super().__init__(self.message, *args)

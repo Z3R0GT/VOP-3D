@@ -12,20 +12,23 @@ def __continue__(*nm):
 def __queque__(*nm):
     sys.exit()
 
+    print("SALIR WIP")
 def __save__():
-    ...
+
+    print("SAVE WIP")
 
 def __load__():
-    ...
 
-def __main_menu__():
-    ...
+    print("LOAD WIP")
 
+def __main_menu__(*nm):
+    inp = nm[0]
+    var = nm[1]
+
+    print("RETURN WIP")
 
 class Buttons(BasisButtons, BasisTreeNode):
     def __init__(self, 
-                 father,
-                 id:int,
                  name: str, 
                  x: int, 
                  y: int, 
@@ -40,8 +43,8 @@ class Buttons(BasisButtons, BasisTreeNode):
                                  "CONTINUE", 
                                  "CUSTOM"]="CUSTOM") -> None:
         
-        super().__init__(name, len(BUTTONS_OBJ), "btn", x, y, comment)
-        super().__child_node__(father, id)
+        super().__init__(name, len(BUTTONS_OBJ), "btn", text, x, y, comment)
+        super().__child_node__()
 
         self.in_id:int = 0
 

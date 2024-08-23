@@ -139,7 +139,8 @@ class BasisSquare(BasisViewPort):
         Returns:
             tuple[bool,int]: representación FINAL de la operación hecha
         """
-        checker_coord(coords)
+        for i in coords:
+            checker_coord(i, self.vec)
         self.__del_pre_view__()
 
         for _in_ in coords:
@@ -185,7 +186,7 @@ class BasisSquare(BasisViewPort):
 
             if single in ["last", "start"]:
                 return temp_line
-            elif DEBUG_MODE:
+            elif DEBUG_MODE[0]:
                 self.square.append(temp_line+f"     line {self.abs}: {y}")
             else:
                 self.square.append(temp_line)

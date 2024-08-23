@@ -1,15 +1,14 @@
 from .BasisNode import *
-
 VIEWPORT_LIMIT = 2
 
 def checker_coord(line:list, limit:list):
     if not type(line) == type([]):
-        raise VectorIncorrect(line)
+        raise IncorrectVector(line)
     if not len(line) == VIEWPORT_LIMIT:
         raise CoordNotFound(line)
     if limit == "ex":
         return
-    if (not line[0] > limit[0]) or (not line[1] > limit[1]):
+    if (not line[0] < limit[0]) or (not line[1] < limit[1]):
         raise CoordExced(line, limit)
 
 class BasisViewPort(BasisNode):

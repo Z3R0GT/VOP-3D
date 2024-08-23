@@ -5,6 +5,15 @@ from time import sleep
 from ...util import *
 
 def _set_name_(nme:str, nme_dtf:Literal["DEFAULT + NRO"]|list|tuple) -> str:
+    """Crear un nombre por defecto en caso la literal no sea dado
+
+    Args:
+        nme (str): nombre literal
+        nme_dtf (Literal[&quot;DEFAULT + NRO&quot;]): nombre dado
+
+    Returns:
+        str: nombre final
+    """
     if type(nme) == type(""):
         if nme != "":
             return nme
@@ -28,9 +37,22 @@ class BasisNode:
                      }
 
     def __set_meta__(self, nme:str, kwr:str|int|list|tuple|dict):
+        """Crea una llave dado un valor para el objeto
+
+        Args:
+            nme (str): llave
+            kwr (str | int | list | tuple | dict): valor
+        """
         self.meta[nme] = kwr
 
     def _edit_meta_(self, nme:str, kwr:str|int|list|tuple|dict, pos:str|int=...):
+        """Edita el valor de un objeto
+
+        Args:
+            nme (str): llave
+            kwr (str | int | list | tuple | dict): valor
+            pos (str | int, optional): en caso que el valor sea lista, dar la posición. Defaults to ....
+        """
         if type(pos) != type(...):
             if type(kwr) == type([]) or type(kwr) == type({}): 
                 self.meta[nme][pos].append(kwr)
@@ -40,11 +62,24 @@ class BasisNode:
             self.__set_meta__(nme, kwr)
 
     def get_meta(self, isPrint:bool=True) -> dict:
+        """Imprime la información de meta (y la retorna)
+
+        Args:
+            isPrint (bool, optional): ¿se puede imprimir?. Defaults to True.
+
+        Returns:
+            dict: representación de la actual meta
+        """
         if isPrint:
             print(self.meta)
         return self.meta
 
     def del_meta(self, nme):
+        """Borra una valor (es permanente)
+
+        Args:
+            nme (_type_): llave
+        """
         try:
             del self.meta[nme]
         except KeyError:
