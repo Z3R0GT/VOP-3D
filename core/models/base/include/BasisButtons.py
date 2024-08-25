@@ -18,8 +18,6 @@ class BasisButtons(BasisUI):
                         self._in_.append(input(f"{text}{MARK_SCAPE}"))
                 else:
                     self._in_.append(input(f"{msg}{MARK_SCAPE}"))
-        print(self._in_, self.var)
-        input()
         self.action(self._in_, self.var)
 
     def execute(self, arg):

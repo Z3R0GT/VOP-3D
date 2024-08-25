@@ -1,6 +1,9 @@
 from ..include.BasisViewport import *
 
-def _insert_(old_:str|list, new_:str|list, 
+COMPONENTS_UI_VE = ["men"]
+COMPONENTS_UI_TF = ["pnl"]
+
+def insert(old_:str|list, new_:str|list, 
              from_:int=..., to_:int=..., 
              specific_:int=...) -> str:
     temp = []
@@ -139,21 +142,26 @@ class BasisSquare(BasisViewPort):
         Returns:
             tuple[bool,int]: representación FINAL de la operación hecha
         """
+        if self.abs in COMPONENTS_UI_VE:
+            vec = self.vec
+        elif self.abs in COMPONENTS_UI_TF:
+            vec = self.transform
+
         for i in coords:
-            checker_coord(i, self.vec)
+            checker_coord(i, vec)
         self.__del_pre_view__()
 
         for _in_ in coords:
             len_chr = len(CHR)
-            if len_chr >= self.vec[0]:
+            if len_chr >= vec[0]:
                 #add
-                self.square[_in_[1]] = _insert_(self.square[_in_[1]], f"{CHR}", from_=_in_[0], to_=self.vec[0])
+                self.square[_in_[1]] = insert(self.square[_in_[1]], f"{CHR}", from_=_in_[0], to_=vec[0])
                 #security
-                self.square[_in_[1]] = _insert_(self.square[_in_[1]], f"{self.character}", specific_=self.vec[0]-1)
+                self.square[_in_[1]] = insert(self.square[_in_[1]], f"{self.character}", specific_=vec[0]-1)
 
-                return True, int(len_chr-self.vec[0])
+                return True, int(len_chr-vec[0])
             else:
-                self.square[_in_[1]] = _insert_(self.square[_in_[1]], f"{CHR}", from_=_in_[0], to_=_in_[0]+len_chr)
+                self.square[_in_[1]] = insert(self.square[_in_[1]], f"{CHR}", from_=_in_[0], to_=_in_[0]+len_chr)
                 return False, 0 
         del _in_, len_chr
         self.__set_pre_view__()
@@ -194,3 +202,5 @@ class BasisSquare(BasisViewPort):
         self.__set_pre_view__()
         if not chr == "":
             self.character = temp
+
+

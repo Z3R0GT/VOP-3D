@@ -8,6 +8,15 @@ class CoordNotFound(ValueError):
         super().__init__(self.message, *args)
 
 
+class CoordInConflic(ValueError):
+    """Raised when the coord is colision with another"""
+    def __init__(self, foo, *args: object) -> None:
+        self.message = f"The node is in conlict from {foo.name} with {args[0].name} ({foo.vec}, {args[0].vec})"
+        self.foo = foo
+        #del args
+        super().__init__(self.message)
+
+
 class CoordExced(ValueError):
     """Raised when some coord is out of the limit"""
     def __init__(self, foo, local, *args: object) -> None:

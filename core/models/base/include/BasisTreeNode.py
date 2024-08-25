@@ -6,7 +6,7 @@ class BasisTreeNode(BasisNode):
     def __father_node__(self):
         """Crea las variables 'child_lst' y 'child_total' al nodo
         """
-        self.child_lst = []
+        self.child_lst:list[BasisNode] = []
         self.child_total = 0
 
         self.__set_meta__("child_lst", self.child_lst)
@@ -16,32 +16,35 @@ class BasisTreeNode(BasisNode):
         """Crea las variables 'father_nod' y 'in_id' (inside ID)
 
         """
-        self.father = ...
+        self.father:BasisNode = ...
         self.in_id:int = ...
 
         self.__set_meta__("father", self.father)
         self.__set_meta__("in_id", self.in_id)
 
-    def add_child(self, child):
+    def add_child(self, child, is_new:bool=True):
         """Agrega a un hijo a los nodos que tenga 'father_node' en su __init__
         (puede escribir un metodo 'adder' para darle más funcionalidad)
         Args:
             child (_type_): referencia en memoria del nodo
         """
-        self.can_be_child(child, True)
-        self.can_be_father(self, True)
+        self.can_be_child(child, throw=True)
+        self.can_be_father(self, throw=True)
+        if child.father != ...:
+            raise IncorrectTypeNode(child)
 
-        child.in_id  = self.child_total
-        child.father = self
+        if is_new:
+            child.in_id  = self.child_total
+            child.father = self
 
-        child.__set_meta__("father", child.father)
-        child.__set_meta__("in_id", child.in_id)
+            child.__set_meta__("father", child.father)
+            child.__set_meta__("in_id", child.in_id)
 
-        self.child_lst.append(child)
-        self.child_total += 1
+            self.child_lst.append(child)
+            self.child_total += 1
 
-        self.__set_meta__("child_lst", self.child_lst)
-        self.__set_meta__("child_total", self.child_total)
+            self.__set_meta__("child_lst", self.child_lst)
+            self.__set_meta__("child_total", self.child_total)
 
         #ESTE METODO DEPENDERA DEL OBJETO PARA COMPLETAR LA ACCION
         if hasattr(self, "adder"):
@@ -50,8 +53,8 @@ class BasisTreeNode(BasisNode):
             print("Metodo 'adder' no encontrado, continuando con la ejecución")
 
     def edit_child(self, child, *args):
-        self.can_be_child(child, True)
-        self.can_be_father(self, True)
+        self.can_be_child(child, throw=True)
+        self.can_be_father(self, throw=True)
 
         #ESTE METODO DEPENDERA DEL OBJETO PARA COMPLETAR LA ACCION
         if hasattr(self, "editter"):
@@ -60,32 +63,34 @@ class BasisTreeNode(BasisNode):
             print("Metodo 'editter' no encontrado, continuando con la ejecución")
 
 
-    def del_child(self, child, kind:Literal["static","dinamic"]="static"):
+    def del_child(self, child, *, is_new:bool=True, kind:Literal["static","dinamic"]="static"):
         """Borra a un nodo hijo del padre (no se puede recuperar luego)
         (puede escribir un metodo 'deleter' para darle más funcionalidad)
         Args:
             child (_type_): referencia en memoria del nodo
             kind (Literal[&quot;static&quot;,&quot;dinamic&quot;], optional): tipo de operación (static mantendra la lista de hijos, mientras que dinamic la modificara, eso incluye los 'in_id' de los hijos). Defaults to "static".
         """
-        self.can_be_child(child, True)
-        self.can_be_father(self, True)
+        self.can_be_child(child, throw=True)
+        self.can_be_father(self, throw=True)
 
-        if kind == "static":
-            self.child_lst[child.in_id]=0
-        elif kind =="dinamic":
-            self.child_total-=1
-            del self.child_lst[child.in_id]
-            for i in self.child_lst:
-                i.in_id -=1
+        if is_new:
+            if kind == "static":
+                self.child_lst[child.in_id]=0
+            elif kind =="dinamic":
+                self.child_total-=1
+                del self.child_lst[child.in_id]
+                for i in self.child_lst:
+                    i.in_id -=1
+                    i.__set_meta__("in_id", i.in_id)
 
-        self.__set_meta__("child_lst", self.child_lst)
-        self.__set_meta__("child_total", self.child_total)
+            self.__set_meta__("child_lst", self.child_lst)
+            self.__set_meta__("child_total", self.child_total)
 
-        child.in_id = ...
-        child.father = ...
+            child.in_id = ...
+            child.father = ...
 
-        child.__set_meta__("father", child.father)
-        child.__set_meta__("in_id", child.in_id)
+            child.__set_meta__("father", child.father)
+            child.__set_meta__("in_id", child.in_id)
 
         #ESTE METODO DEPENDERA DEL OBJETO PARA COMPLETAR LA ACCION
         if hasattr(self, "deleter"):
@@ -100,9 +105,9 @@ class BasisTreeNode(BasisNode):
             child_from (_type_): Hijo que quieres mover hacia
             child_to (_type_): Hijo que quieres mover donde
         """
-        self.can_be_child(child_from, True)
-        self.can_be_child(child_to, True)
-        self.can_be_father(self, True)
+        self.can_be_child(child_from, throw=True)
+        self.can_be_child(child_to, throw=True)
+        self.can_be_father(self, throw=True)
 
         tmp = child_from
 
@@ -111,7 +116,7 @@ class BasisTreeNode(BasisNode):
         
         self.__set_meta__("child_lst", self.child_lst)
 
-    def can_be_child(self, node, throw:bool=False) -> bool:
+    def can_be_child(self, node:BasisNode,* , components:list[str]=[], throw:bool=False) -> bool:
         """Pregunta si un el nodo puede o no ser un hijo
 
         Args:
@@ -124,7 +129,12 @@ class BasisTreeNode(BasisNode):
         Returns:
             bool: literal de 'si' o 'no'
         """
-        if hasattr(node, "in_id"):
+        if components == []:
+            con = hasattr(node, "in_id")
+        else:
+            con = node.abs in components
+
+        if con:
             return True
         else:
             if throw:
@@ -132,7 +142,7 @@ class BasisTreeNode(BasisNode):
             else:
                 return False
 
-    def can_be_father(self, node, throw:bool=False) -> bool:
+    def can_be_father(self, node:BasisNode, *, components:list[str]=[], throw:bool=False) -> bool:
         """Pregunta si un el nodo puede o no ser un padre
 
         Args:
@@ -145,7 +155,12 @@ class BasisTreeNode(BasisNode):
         Returns:
             bool: literal de 'si' o 'no'
         """
-        if hasattr(node, "child_lst"):
+        if components == []:
+            con = hasattr(node, "child_lst")
+        else:
+            con = node.abs in components
+
+        if con:
             return True
         else:
             if throw:
@@ -160,10 +175,10 @@ class BasisTreeNode(BasisNode):
         Args:
             father_to (_type_): _description_
         """
-        self.can_be_father(father_to, True)
-        self.can_be_father(self, True)
+        self.can_be_father(father_to, throw=True)
+        self.can_be_father(self, throw=True)
 
-        self.father.del_child(self, "dinamic")
+        self.father.del_child(self, is_new=False, kind="dinamic")
 
         father_to.add_child(self)
         self.in_id = father_to.child_total-1

@@ -1,6 +1,6 @@
 from ...base.include.BasisButtons  import *
 from ...base.include.BasisTreeNode import *
-from ..references import BUTTONS_OBJ
+from ..references import *
 
 def __link__(*nm):
     from webbrowser import open
@@ -12,7 +12,6 @@ def __continue__(*nm):
 def __queque__(*nm):
     sys.exit()
 
-    print("SALIR WIP")
 def __save__():
 
     print("SAVE WIP")
@@ -22,10 +21,15 @@ def __load__():
     print("LOAD WIP")
 
 def __main_menu__(*nm):
+    MENU_OBJ[0].start_cast()
+
+def __back__(*nm):
     inp = nm[0]
     var = nm[1]
-
-    print("RETURN WIP")
+    try:
+        MENU_OBJ[var].start_cast()
+    except IndexError:
+        print_debug("MENU NO ENCONTRADO")
 
 class Buttons(BasisButtons, BasisTreeNode):
     def __init__(self, 
@@ -39,6 +43,7 @@ class Buttons(BasisButtons, BasisTreeNode):
                                  "LOAD", 
                                  "SAVE", 
                                  "BACK", 
+                                 "MAIN",
                                  "LINK", 
                                  "CONTINUE", 
                                  "CUSTOM"]="CUSTOM") -> None:
@@ -64,10 +69,14 @@ class Buttons(BasisButtons, BasisTreeNode):
                 if text == "":
                     self.character = "Salir"
                 self.action = __queque__
-            case "BACK":
+            case "MAIN":
                 if text == "":
                     self.character = "Regresar"
                 self.action = __main_menu__
+            case "BACK":
+                if text == "":
+                    self.character = "Regresar"
+                self.action = __back__
             case "LINK":
                 if text == "":
                     self.character = "Abrir URL"
@@ -83,6 +92,8 @@ class Buttons(BasisButtons, BasisTreeNode):
             case _:
                 self.action = action
 
+        BUTTONS_OBJ.append(self)
+        
     def caster(self, msg:tuple[str]=(""), *var):
         """Setea las variable 'cast' y 'var' para su uso posterior (no retreactivo)
 

@@ -9,7 +9,7 @@ from .components.panel import Panel
 #REFERENCES
 from ..references import MENU_OBJ
 
-COMPONENTS_MENU = ["btn", "pnl"]
+COMPONENTS_MENU_CH = ["btn", "pnl"]
 
 class Menu(BasisUI, BasisTreeNode):
     def __init__(self, 
@@ -26,14 +26,14 @@ class Menu(BasisUI, BasisTreeNode):
         self.panel:list[Panel] =[]
 
         self.child_lst:list[Buttons| Panel]
-        self.__set_meta__("panel", self.panel)
+        
         self._set_frame_square_2d_(self.vec)
 
         if DEBUG_MODE[0]:
             self._set_frame_num_square_2d_(self.vec[0])
         MENU_OBJ.append(self)
 
-    def adder(self, node:BasisNode|BasisTreeNode|BasisSquare):
+    def adder(self, node:Buttons|Panel):
         """Agrega un nodo de manera literal (no se incluye en la meta final)
 
         Args:
@@ -42,24 +42,35 @@ class Menu(BasisUI, BasisTreeNode):
         Raises:
             IncorrectTypeNode: Lanzado cuando el nodo es compatible para el tipo de objeto
         """
-        if not node.abs in COMPONENTS_MENU:
+        if not node.abs in COMPONENTS_MENU_CH:
             raise IncorrectTypeNode(node)
 
         match node.abs:
             case "btn":
-                self.create_text(f"{node.in_id+1}) "+node.character, "CUSTOM", node.vec)
+                text = len(f"{len(self.btns)}) "+node.character)
+                if text-node.vec[0] >= self.vec[0]: 
+                    raise CoordExced(text, self.vec[0]) 
+                   
+                self.btns.append(node)
+                self.create_text(f"{len(self.btns)}) "+node.character, "CUSTOM", node.vec)
             case "pnl":
-                print("WIP")
+                checker_coord(node.transform, self.vec)
+                for nodes in self.child_lst:
+                    if nodes.name == node.name:
+                        continue
 
-    def editter(self, node:BasisNode|BasisTreeNode|BasisSquare, args):
-        print(args)
-        
-        
-        
-        
-        ...
+                    if nodes.vec[1] == node.vec[1] and nodes.vec[0] == node.vec[0]:
+                        raise CoordInConflic(nodes, node) 
+                
+                for y in range(node.vec[1], node.transform[1]+node.vec[1]):
+                    self.square[y] =insert(self.square[y], 
+                                           node.square[y-node.vec[1]],
+                                           node.vec[0],
+                                           node.transform[0]+node.vec[0])
+                self.__set_pre_view__()
+                self.panel.append(node)
 
-    def deleter(self, node:BasisNode|BasisTreeNode|BasisSquare):
+    def deleter(self, node:Buttons|Panel):
         """borra un nodo de manera literal (no se incluye en la meta final)
 
         Args:
@@ -68,14 +79,20 @@ class Menu(BasisUI, BasisTreeNode):
         Raises:
             IncorrectTypeNode: Lanzado cuando el nodo es compatible para el tipo de objeto
         """
-        if not node.abs in COMPONENTS_MENU:
+        if not node.abs in COMPONENTS_MENU_CH:
             raise IncorrectTypeNode(node)
 
         match node.abs:
             case "btn":
                 self.create_text(" "*(node.in_id+len(node.character)), "CUSTOM", node.vec)
             case "pnl":
-                print("WIP")
+                
+                for y in range(node.vec[1], node.transform[1]+node.vec[1]):
+                    self.square[y] =insert(self.square[y], 
+                                           " "*node.transform[0],
+                                           node.vec[0],
+                                           node.transform[0]+node.vec[0])
+                self.__set_pre_view__()
 
     def execute(self, btn:Buttons, *args):
 
@@ -102,7 +119,7 @@ class Menu(BasisUI, BasisTreeNode):
                 sleep(10)
                 return 
 
-            self.child_lst[_in]._input_(self.child_lst[_in].cast)
+            self.btns[_in]._input_(self.btns[_in].cast)
 
         #except (ValueError, IndexError) as e:
         #    print(e)

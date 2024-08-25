@@ -15,11 +15,18 @@ class BasisUI(BasisSquare, BasisViewPort):
                     sector:Literal["CENTER", "UPPER", "LOWER", "CUSTOM"],
                     line:tuple[int, int]=...,
                     chk=True):
-        checker_coord(line, self.vec)
+        if self.abs in COMPONENTS_UI_VE:
+            vec = self.vec
+        elif self.abs in COMPONENTS_UI_TF:
+            vec = self.transform
+
+        checker_coord(line, vec)
+
         def __recursive__(ver:list[bool, int]):
             temp = []
             new  = ""
-            checker_coord(ver, self.vec)
+            checker_coord(ver, vec)
+
             for chr_per in range(len(text)-ver[1]-2, len(text)):
                 temp.append(text[chr_per])
 
@@ -41,16 +48,16 @@ class BasisUI(BasisSquare, BasisViewPort):
             ver = self._edit_line_square_2d_([(line)], text)
         elif sector == "CENTER":
             if chk:
-                line = (int(self.vec[0]/2)-5, int(self.vec[1]/2))
+                line = (int(vec[0]/2)-5, int(vec[1]/2))
             ver = self._edit_line_square_2d_([(line)], text)
             if ver[0]:
                 __recursive__(ver)
         elif sector == "LOWER":
             if chk:
-                line = (1, self.vec[1]-2)
+                line = (1, vec[1]-2)
             ver = self._edit_line_square_2d_([(line)], text)
             if ver[0]:
-                self.square[-2] = self._set_frame_square_2d_(self.vec, "last")
+                self.square[-2] = self._set_frame_square_2d_(vec, "last")
                 __recursive__(ver)
 
         self.__set_pre_view__()
