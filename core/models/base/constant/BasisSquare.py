@@ -1,8 +1,30 @@
-from ..include.BasisViewport import *
+"""
+Nodo base para todo objeto que tiene tamaño de pantalla
 
+Contribuidores
+-------------
+    Z3R0_GT: 0.0.0.1 \n
+        contac.es.z3r0.gt@gmail.com
+
+Registro
+--------
+    Importaciones relativas: 0.0.0.1
+        * imports
+    
+Modulos incluidos
+-----------------
+    BasisViewPort: 0.0.0.1
+        nodo base para la pantalla
+"""
+if __name__ == "__main__":
+    from sys import exit
+    exit(1)
+
+from ..include.BasisViewport import *
+    
 COMPONENTS_UI_VE = ["men"]
 COMPONENTS_UI_TF = ["pnl"]
-
+    
 def insert(old_:str|list, new_:str|list, 
              from_:int=..., to_:int=..., 
              specific_:int=...) -> str:
@@ -34,6 +56,7 @@ def insert(old_:str|list, new_:str|list,
 
     return new
 
+
 class BasisSquare(BasisViewPort):
     """Conjunto de funciones horientados a los cuadrados en sus diferentes
     direcciones, tamaños y vectores
@@ -41,75 +64,49 @@ class BasisSquare(BasisViewPort):
     Args:
         BasisViewPort (BasisViewPort): clase base de todo objeto que se puede ver
     """
-    def __tranform_2d__(self, size_x:int, size_y:int):
-        """Otorga al objeto un tranformador en 2D
-
-        Args:
-            size_x (int): tamaño en X
-            size_y (int): tamaño en Y
-        """
-        self.transform = [size_x, size_y]
-        self.__set_meta__("transform", self.transform)
-
-    def __tranform_3d__(self, size_x:int, size_y:int, size_z:int):
-        """Otorga al objeto un transformador en 3D
-
-        Args:
-            size_x (int): tamaño en X
-            size_y (int): tamaño en Y
-            size_z (int): tamaño en Z
-        """
-        self.transform = [size_x, size_y, size_z]
-        self.__set_meta__("transform", self.transform)
     
-    def __set_vec_2d__(self, chr:str, x:int, y:int):
-        """Otorga al objeto una representación de vector en 2D
-
-        Args:
-            chr (str): caracter empleado
-            x (int): posición en X
-            y (int): posición en Y
-        """
-        self.character = chr
-
-        self.vec = [x, y]
-        self._tmp_vec_ = [x, y]
-
-        self.__set_meta__("chr", self.character)
-        self.__set_meta__("vec", self.vec)
-
-    def __set_vec_3d__(self, chr:str, x:int, y:int, z:int):
-        """Otorga al objeto una representación de vector en 3D
-
-        Args:
-            chr (str): caracter empleado
-            x (int): posición en X
-            y (int): posición en Y
-            z (int): posición en Z
-        """
-        self.character = chr
-
-        self.vec = [x, y, z]
-        self._tmp_vec_ = [x, y, z]
-
-        self.__set_meta__("chr", self.character)
-        self.__set_meta__("vec", self.vec)
-
-    def _set_line_square_2d_(self):
-        """Crea con base al cuadrado en 2D un frame de la vista actual del objecto
-        """
+    @overload
+    def __vector__(self, chr:str, x:int, y:int) -> None:...
+    @overload
+    def __vector__(self, chr:str, x:int, y:int, z:int) -> None:...
+    def __vector__(self, *args):
+        if len(args) == 3:
+            self.character = args[0]
+        
+            self.vec       = [args[1], args[2]]
+            self._tmp_vec_ = [args[1], args[2]]
+            
+            self.__set_meta__("chr", self.character)
+            self.__set_meta__("vec", self.vec)
+        elif len(args) == 4:
+            self.character = args[0]
+            
+            self.vec       = [args[1], args[2], args[3]]
+            self._tmp_vec_ = [args[1], args[2], args[3]]
+            
+            self.__set_meta__("chr", self.character)
+            self.__set_meta__("vec", self.vec)
+            
+    @overload
+    def __transform__(self, size_x:int, size_y:int) -> None:...
+    @overload
+    def __transform__(self, size_x:int, size_y:int, size_z:int) -> None:...
+    def __transform__(self, *args):
+        if len(args) == 2:
+            self.transform = [args[0], args[1]]
+            self.__set_meta__("transform", self.transform)
+        elif len(args) == 3:
+            self.transform = [args[0], args[1], args[2]]
+            self.__set_meta__("transform", self.transform)
+    
+    def _set_line_square_(self):
         for y in range(self.vec[1]):
             for x in range(self.vec[0]):
                 self.pre_view += self.character
             self.__del_pre_view__()
         del y, x
-    
-    def _set_frame_num_square_2d_(self, vec_x:int):
-        """Crea una linea debajo del cuadrado actual con base a vector X
 
-        Args:
-            vec_x (int): limite de numero a parecer
-        """
+    def _set_frame_num_square_(self, vec_x:int):
         self.__del_pre_view__()
 
         line_all = ""
@@ -130,18 +127,8 @@ class BasisSquare(BasisViewPort):
         self.__set_pre_view__()
         del line_all, line_num, nro
 
-    def _edit_line_square_2d_(self, coords:list[tuple[int, int]], CHR:str="") -> tuple[bool,int]:
-        """Edita una linea o serie de lineas con base a unas coordenadas dadas
-        reemplazando en todo momento con los caracteres nuevos mantiendo la misma
-        lista 
-
-        Args:
-            coords (list[tuple[int, int]]): coordenadas o lista de coordenadas
-            CHR (str, optional): caracter a insertar dentro de dichas coordenadas. Defaults to "".
-
-        Returns:
-            tuple[bool,int]: representación FINAL de la operación hecha
-        """
+    def _edit_line_square_(self, coords:list[tuple[int, int]], 
+                           CHR:str="") -> tuple[bool,int]:
         if self.abs in COMPONENTS_UI_VE:
             vec = self.vec
         elif self.abs in COMPONENTS_UI_TF:
@@ -166,19 +153,9 @@ class BasisSquare(BasisViewPort):
         del _in_, len_chr
         self.__set_pre_view__()
 
-    def _set_frame_square_2d_(self, coords:list[int, int],
+    def _set_frame_square_(self, coords:list[int, int],
                              single:Literal["last", "start", "none"]="none",
                              chr="") -> None | str:
-        """Genera un cuadrado 
-
-        Args:
-            coords (list[int, int]): determinar el largo y alto
-            single (Literal[&quot;last&quot;, &quot;start&quot;, &quot;none&quot;], optional): determina si retorna una linea o el cuadrado. Defaults to "none".
-            chr (str, optional): simbolo base. Defaults to "".
-
-        Returns:
-            None | str: linea o vacio
-        """
         checker_coord(coords, "ex")
 
         temp = self.character
@@ -186,6 +163,7 @@ class BasisSquare(BasisViewPort):
             self.character = chr
         else:
             del temp
+        print(coords, self.character)
         for y in range(coords[1]):
             if y == 0 or y == (coords[1]-1):
                 temp_line = f"{self.character}" * coords[0]
@@ -202,5 +180,7 @@ class BasisSquare(BasisViewPort):
         self.__set_pre_view__()
         if not chr == "":
             self.character = temp
+
+
 
 

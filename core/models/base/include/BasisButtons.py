@@ -1,3 +1,23 @@
+"""
+Nodo base para cualquier objeto del tipo boton
+
+Contribuidores
+-------------
+    Z3R0_GT: 0.0.0.1 \n
+        contac.es.z3r0.gt@gmail.com
+
+Registro
+--------
+    Importaciones relativas: 0.0.0.1
+        * imports
+    
+Modulos incluidos
+-----------------
+    BasisUI: 0.0.0.1
+        Nodo base para cualquier objeto que tenga interfaz
+    ScreenTools: 0.0.0.1
+        Nodo de utilidad
+"""
 from .BasisUI import *
 from ..tools.ScreenTools import *
 
@@ -20,5 +40,5 @@ class BasisButtons(BasisUI):
                     self._in_.append(input(f"{msg}{MARK_SCAPE}"))
         self.action(self._in_, self.var)
 
-    def execute(self, arg):
+    def execute(self, *arg):
         self.action(arg, self.var)

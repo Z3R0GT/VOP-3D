@@ -1,19 +1,40 @@
+"""
+Nodo de utilidad para todo objeto que 
+use directamente la pantalla
+
+Contribuidores
+-------------
+    Z3R0_GT: 0.0.0.1 \n
+        contac.es.z3r0.gt@gmail.com
+
+Registro
+--------
+    Importaciones relativas: 0.0.0.1
+        * imports
+    
+Modulos incluidos
+-----------------
+    BasisSquare: 0.0.0.1
+        nodo base para todo objeto que tiene tamaño de pantalla
+"""
 import logging, sys
 from os import system
 
-from ..constant.BasisSquare import *
+from ...util import DEBUG_MODE
 
-FIXER_X_SIZE = 5
-FIXER_Y_SIZE = 6
+FIXER_X_SIZE:int = 5
+FIXER_Y_SIZE:int = 6
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 def erase_screen():
     """Borra la pantalla
     """
-    system("cls")
+    if not DEBUG_MODE[0]:
+        system("cls")
 
-def size_screen(x:int=0, y:int=0, obj:BasisSquare=...):
+
+def size_screen(x:int=0, y:int=0, obj=...):
     """Cambia el tamaño de la consola actual
 
     Args:

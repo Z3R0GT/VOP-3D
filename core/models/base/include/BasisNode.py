@@ -1,6 +1,32 @@
+"""
+Nodo base para cualquier objeto
+
+Contribuidores
+-------------
+    Z3R0_GT: 0.0.0.1 \n
+        contac.es.z3r0.gt@gmail.com
+
+Registro
+--------
+    Importaciones relativas: 0.0.0.1
+        * imports
+    
+Modulos incluidos
+-----------------
+    Literal: 4.12.2
+        Decorador opcional
+    sleep:    3.12
+        Función del modulo time desde sleep
+    overload: 3.12
+        Función del modulo typing desde overload
+"""
+if __name__ == "__main__":
+    from sys import exit
+    exit(1)
+
 from typing_extensions import Literal
 from time import sleep
-
+from typing import overload
 
 from ...util import *
 
@@ -14,16 +40,20 @@ def _set_name_(nme:str, nme_dtf:Literal["DEFAULT + NRO"]|list|tuple) -> str:
     Returns:
         str: nombre final
     """
-    if type(nme) == type(""):
-        if nme != "":
-            return nme
-        else:
-            return f"{nme_dtf[0]}_{nme_dtf[1]}"
-        
+    if nme != "":
+        return nme
+    else: 
+        return f"{nme_dtf[0]}_{nme_dtf[1]}"
+    
 class BasisNode:
-    """Clase por defecto de cualquier objeto visto o no en pantalla
-    """
     def __init__(self, name:str, id:int, abs:str, comment:str|None=None ) -> None:
+        """Clase por defecto de cualquier objeto visto o no en pantalla
+        Args:
+            name (str): nombre del nodo
+            id (int): Identificador unico
+            abs (str): abreviatua del nodo
+            comment (str | None, optional): comentario del nodo. Defaults to None.
+        """
         self.name = _set_name_(name, (abs, id))
 
         self.id   = id

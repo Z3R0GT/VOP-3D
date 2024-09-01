@@ -1,6 +1,7 @@
-from ...base.include.BasisButtons  import *
+from ...base.include.BasisButtons import *
 from ...base.include.BasisTreeNode import *
 from ..references import *
+
 
 def __link__(*nm):
     from webbrowser import open
@@ -19,6 +20,7 @@ def __save__():
 def __load__():
 
     print("LOAD WIP")
+    
 
 def __main_menu__(*nm):
     MENU_OBJ[0].start_cast()
@@ -30,14 +32,14 @@ def __back__(*nm):
         MENU_OBJ[var].start_cast()
     except IndexError:
         print_debug("MENU NO ENCONTRADO")
-
+        
+COMPONENTS_BTN_FA:list[str]= ["pnl", "men"]
 class Buttons(BasisButtons, BasisTreeNode):
     def __init__(self, 
                  name: str, 
                  x: int, 
                  y: int, 
-                 text:str,
-                 action=...,
+                 text:str="",
                  comment: str | None = None,
                  default:Literal["EXIT", 
                                  "LOAD", 
@@ -45,16 +47,19 @@ class Buttons(BasisButtons, BasisTreeNode):
                                  "BACK", 
                                  "MAIN",
                                  "LINK", 
+                                 "LIST",
+                                 "OUTP",
                                  "CONTINUE", 
-                                 "CUSTOM"]="CUSTOM") -> None:
+                                 "CUSTOM"]="CUSTOM",
+                action=...) -> None:
         
         super().__init__(name, len(BUTTONS_OBJ), "btn", text, x, y, comment)
-        super().__child_node__()
+        super().__child_node__(COMPONENTS_BTN_FA)
 
         self.in_id:int = 0
 
         self.cast= ("")
-        self.var = 0
+        self.var = []
 
         match default:
             case "SAVE":
@@ -81,7 +86,6 @@ class Buttons(BasisButtons, BasisTreeNode):
                 if text == "":
                     self.character = "Abrir URL"
                 self.action = __link__
-
                 self.var = action
             case "CONTINUE":
                 if text == "":
