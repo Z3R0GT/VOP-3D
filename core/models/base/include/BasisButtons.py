@@ -1,27 +1,6 @@
-"""
-Nodo base para cualquier objeto del tipo boton
-
-Contribuidores
--------------
-    Z3R0_GT: 0.0.0.1 \n
-        contac.es.z3r0.gt@gmail.com
-
-Registro
---------
-    Importaciones relativas: 0.0.0.1
-        * imports
-    
-Modulos incluidos
------------------
-    BasisUI: 0.0.0.1
-        Nodo base para cualquier objeto que tenga interfaz
-    ScreenTools: 0.0.0.1
-        Nodo de utilidad
-"""
-from .BasisUI import *
+from .BasisUI import MARK_SCAPE, BasisUI
 from ..tools.ScreenTools import *
 
-MARK_SCAPE = "\n>  "
 
 class BasisButtons(BasisUI):
 

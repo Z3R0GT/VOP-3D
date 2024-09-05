@@ -1,29 +1,10 @@
-"""
-Nodo base para cualquier objeto que tenga interfaz
-
-Contribuidores
--------------
-    Z3R0_GT: 0.0.0.1 \n
-        contac.es.z3r0.gt@gmail.com
-
-Registro
---------
-    Importaciones relativas: 0.0.0.1
-        * imports
-    
-Modulos incluidos
------------------
-    BasisViewpot: 0.0.0.1
-        Nodo base para todo objeto que tiene pantalla
-    BasisSquare:  0.0.0.1
-        Nodo base para todo objeto que tiene tamaño de pantalla
-    ScreenTools:  0.0.0.1
-        Nodo de utilidad para la pantalla
-"""
 from           .BasisViewport import *
 from ..constant.BasisSquare   import *
 
 from ..tools.   ScreenTools import *
+from sys import exit
+
+MARK_SCAPE = "\n>  "
 
 class BasisUI(BasisSquare, BasisViewPort):
     def __init__(self, name: str, id: int, abs: str, chr:str, x:int, y:int, comment: str | None = None) -> None:

@@ -1,29 +1,11 @@
-"""
-Nodo base para todo objeto que tiene tamaño de pantalla
-
-Contribuidores
--------------
-    Z3R0_GT: 0.0.0.1 \n
-        contac.es.z3r0.gt@gmail.com
-
-Registro
---------
-    Importaciones relativas: 0.0.0.1
-        * imports
-    
-Modulos incluidos
------------------
-    BasisViewPort: 0.0.0.1
-        nodo base para la pantalla
-"""
 if __name__ == "__main__":
     from sys import exit
     exit(1)
 
 from ..include.BasisViewport import *
     
-COMPONENTS_UI_VE = ["men"]
-COMPONENTS_UI_TF = ["pnl"]
+COMPONENTS_UI_VE = ["men", "map"]
+COMPONENTS_UI_TF = ["pnl", "stu"]
     
 def insert(old_:str|list, new_:str|list, 
              from_:int=..., to_:int=..., 
@@ -56,19 +38,7 @@ def insert(old_:str|list, new_:str|list,
 
     return new
 
-
 class BasisSquare(BasisViewPort):
-    """Conjunto de funciones horientados a los cuadrados en sus diferentes
-    direcciones, tamaños y vectores
-
-    Args:
-        BasisViewPort (BasisViewPort): clase base de todo objeto que se puede ver
-    """
-    
-    @overload
-    def __vector__(self, chr:str, x:int, y:int) -> None:...
-    @overload
-    def __vector__(self, chr:str, x:int, y:int, z:int) -> None:...
     def __vector__(self, *args):
         if len(args) == 3:
             self.character = args[0]
@@ -87,10 +57,6 @@ class BasisSquare(BasisViewPort):
             self.__set_meta__("chr", self.character)
             self.__set_meta__("vec", self.vec)
             
-    @overload
-    def __transform__(self, size_x:int, size_y:int) -> None:...
-    @overload
-    def __transform__(self, size_x:int, size_y:int, size_z:int) -> None:...
     def __transform__(self, *args):
         if len(args) == 2:
             self.transform = [args[0], args[1]]
@@ -106,14 +72,14 @@ class BasisSquare(BasisViewPort):
             self.__del_pre_view__()
         del y, x
 
-    def _set_frame_num_square_(self, vec_x:int):
+    def _set_frame_num_square_(self):
         self.__del_pre_view__()
-
+        
         line_all = ""
         line_num = ""
         nro      = 0
 
-        for num in range(vec_x):
+        for num in range(self.__kind_vector__()[0]):
             re = num%10
             line_all+= str(re)
             if re == 0:
@@ -129,10 +95,7 @@ class BasisSquare(BasisViewPort):
 
     def _edit_line_square_(self, coords:list[tuple[int, int]], 
                            CHR:str="") -> tuple[bool,int]:
-        if self.abs in COMPONENTS_UI_VE:
-            vec = self.vec
-        elif self.abs in COMPONENTS_UI_TF:
-            vec = self.transform
+        vec = self.__kind_vector__()
 
         for i in coords:
             checker_coord(i, vec)
@@ -153,17 +116,16 @@ class BasisSquare(BasisViewPort):
         del _in_, len_chr
         self.__set_pre_view__()
 
-    def _set_frame_square_(self, coords:list[int, int],
+    def _set_frame_square_(self,
                              single:Literal["last", "start", "none"]="none",
                              chr="") -> None | str:
-        checker_coord(coords, "ex")
-
+        coords = self.__kind_vector__()
+        
         temp = self.character
         if not chr == "":
             self.character = chr
         else:
             del temp
-        print(coords, self.character)
         for y in range(coords[1]):
             if y == 0 or y == (coords[1]-1):
                 temp_line = f"{self.character}" * coords[0]
@@ -181,6 +143,8 @@ class BasisSquare(BasisViewPort):
         if not chr == "":
             self.character = temp
 
-
-
-
+    def __kind_vector__(self) -> list[int, int]:
+        if self.abs in COMPONENTS_UI_VE:
+            return self.vec
+        elif self.abs in COMPONENTS_UI_TF:
+            return self.transform

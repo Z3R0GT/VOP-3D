@@ -1,26 +1,6 @@
-"""
-Nodo base para cualquier objeto que requiera heredar
-
-Contribuidores
--------------
-    Z3R0_GT: 0.0.0.1 \n
-        contac.es.z3r0.gt@gmail.com
-
-Registro
---------
-    Importaciones relativas: 0.0.0.1
-        * imports
-    
-Modulos incluidos
------------------
-    BasisNode: 0.0.0.1
-        Nodo base para cualquier objeto
-"""
-
 from .BasisNode import *
 
 class BasisTreeNode(BasisNode):
-    
     def __father_node__(self, components:list):
         self.child_lst:list[BasisNode] = []
         self.child_tlt:int             = 0
@@ -41,7 +21,7 @@ class BasisTreeNode(BasisNode):
     def add_child(self, node:BasisNode, is_new:bool=True):
         self.can_be_child (node, throw=True)
         node.can_be_father(self, throw=True) 
-        if node.father != ...:
+        if node.father != ... and node.father != self:
             raise IncorrectTypeNode(node)
         
         if is_new:
@@ -85,16 +65,15 @@ class BasisTreeNode(BasisNode):
             
             self.__update_father__()
     
-            child.__child_node__(child.comp_ch)
+            child.__child_node__(child.comp_fa)
             
         if hasattr(self, "deleter"):
             self.deleter(child)
         else:
             print("Metodo 'deleter' no encontrado, continuando con la ejecución")
-
+        
     def can_be_child(self, node:BasisNode,*,throw:bool=False) -> bool:
-        """hijos"""
-        if node.abs in self.comp_ch:
+        if node.abs in self.comp_ch or hasattr(node, "father"):
             return True
         else:
             if throw:
@@ -103,8 +82,7 @@ class BasisTreeNode(BasisNode):
                 return False
      
     def can_be_father(self, node:BasisNode,*,throw:bool=False) -> bool:
-        """padres"""
-        if node.abs in self.comp_fa:
+        if node.abs in self.comp_fa or hasattr(node, "child_tlt"):
             return True
         else:
             if throw:
