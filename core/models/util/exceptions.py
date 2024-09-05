@@ -15,7 +15,7 @@ Registro
     
 
 """
-
+from typing_extensions import *
 
 #######################
 #######################
@@ -59,11 +59,10 @@ class IncorrectVector(TypeError):
 class IncorrectTypeNode(TypeError):
     def __init__(self, node,*args: object) -> None:
         """Lanzado cuando un nodo es incorrecto"""
-        self.message = f"El nodo {type(node)} <--> {node.name} no es compatible"
+        self.message = f"El nodo {type(node)} <--> {node} no es compatible"
         self.foo = node
         super().__init__(self.message, *args)
         
-
 #######################
 #######################
 #     Arbol nodos     #
@@ -80,6 +79,14 @@ class IsNotFather(AttributeError):
     def __init__(self, node, *args: object) -> None:
         """Lanzado cuando un nodo no es un padre"""
         self.message = f"El objeto {node.name} no es un padre o no puede ser padre"
+        self.foo = node
+        super().__init__(self.message, *args)
+    
+@deprecated("Posiblemente se cambie 'IndexError' y 'HasNotChilds' por un nombre mejor", stacklevel=3)
+class HasNotChilds(IndexError):
+    def __init__(self, node, *args: object) -> None:
+        """Lanzado cuando un nodo no tiene hijos"""
+        self.message = f"El objeto {node.name} no tiene hijos"
         self.foo = node
         super().__init__(self.message, *args)
         
