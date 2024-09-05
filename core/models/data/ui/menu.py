@@ -1,4 +1,4 @@
-from ...base.include.BasisUI import *
+from ...base.include.BasisUI import MARK_SCAPE
 from ...base.include.BasisTreeNode import *
 
 from .buttons import *
@@ -24,10 +24,10 @@ class Menu(BasisUI, BasisTreeNode):
         
         self.child_lst:list[Buttons|Panel]
         
-        self._set_frame_square_(self.vec)
+        self._set_frame_square_()
         
         if DEBUG_MODE[0]:
-            self._set_frame_num_square_(self.vec[0])
+            self._set_frame_num_square_()
         MENU_OBJ.append(self)
        
     def adder(self, node:Buttons|Panel):
@@ -87,7 +87,7 @@ class Menu(BasisUI, BasisTreeNode):
             _in = int(input(f"Ingresa el numero del boton{MARK_SCAPE}"))-1
             #CANCELACIÓN DE OPERACIÓN (acortador)
             if _in+1 == 2004:
-                sys.exit(0)
+                exit(0)
             elif _in+1 == 3013:
                 print_debug("'An human kissing a dragon, beware that's still kind of close to the zoophilia factor'.- ArchangelCGA")
                 print_debug("EASTEREGG Finded")

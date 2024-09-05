@@ -11,7 +11,7 @@ def __continue__(*nm):
     return
 
 def __queque__(*nm):
-    sys.exit()
+    exit()
 
 def __save__():
 
