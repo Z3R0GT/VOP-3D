@@ -1,11 +1,10 @@
 from .config.constant import MAPA_OBJ
 
-from ...base.constant.BasisSquare  import *
-from ...base.include.BasisTreeNode import *
+from ...base.constant.BasisRoot import *
 
-COMPONENTS_MAPA_CH:list[str]=["obj"]
+COMPONENTS_MAPA_CH:list[str]=["obj", "stu"]
 
-class Mapa(BasisTreeNode, BasisSquare):
+class Mapa(BasisRoot):
     def __init__(self, 
                  name: str, 
                  x:int,
@@ -28,6 +27,11 @@ class Mapa(BasisTreeNode, BasisSquare):
         
         match node.abs:
             case "stu":
-                print("wip")
+                self._insert_square(node)
+
+    def deleter(self, node:BasisNode):
+        match node.abs:
+            case choice if choice in ["stu", "obj"]:
+                pass
         
-        ...
+        self.__update_children__(False)

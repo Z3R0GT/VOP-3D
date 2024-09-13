@@ -2,8 +2,8 @@ from .config.constant import PANE_OBJ, DOOR_OBJ
 
 from ...base.constant.BasisRoot import *
 
-COMPONENTS_STU_CH:list[str] = ["dor"]
-COMPONENTS_STU_FA:list[str] = ["men"]
+COMPONENTS_STU_CH:list[str] = ["dor", "obj", "stu"]
+COMPONENTS_STU_FA:list[str] = ["map", "stu"]
 
 COMPONENTS_DOR_FA:list[str] = ["stu"]
 
@@ -49,7 +49,7 @@ class Structure(BasisRoot):
     
 
     def adder(self, node: Door):
-        checker_coord(node.vec, self.vec)
+        checker_coord(node.vec, self.transform)
         match node.abs:
             case "dor":
                 if node.list[0]:
@@ -61,10 +61,13 @@ class Structure(BasisRoot):
                 
                 self.__del_pre_view__()
                 self.__set_pre_view__()
-          
+            case "stu":
+                self._insert_square(node)
         
     def deleter(self, node:Door):
         match node.abs:
+            case choice if choice in ["stu", "obj"]:
+                ...
             case "dor":
                 if node.list[0]:
                     txt = " "*(len(node.character)+node.list[1])
@@ -75,10 +78,7 @@ class Structure(BasisRoot):
                 
                 self.__del_pre_view__()
                 self.__set_pre_view__()
-            case "stu":
-                print("wip")
-        
-        
+
         self.__update_children__(False)
            
     def create_square(self, kind:Literal["X", "Y", "-Y"],

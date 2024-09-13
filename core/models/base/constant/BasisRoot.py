@@ -3,7 +3,6 @@ from ..include.BasisTreeNode import *
 
 class BasisRoot(BasisSquare, BasisTreeNode):
     def _base(self):
-        self.can_be_father(self, throw=True)
         if self.child_tlt == 0 or len(self.child_lst) == 0:
             raise HasNotChilds(self)
         
@@ -36,3 +35,14 @@ class BasisRoot(BasisSquare, BasisTreeNode):
             self.add_child(node, False)
             
             
+    def _insert_square(self, node):
+        if node.in_id != Ellipsis:
+            checker_coord([node.vec[0]+node.transform[0], node.vec[1]+node.transform[1]], self.__kind_vector__())
+            checker_coord(self, node)
+
+        c=0
+        for y in range(node.vec[1], node.transform[1]+2):
+            self.square[y] = insert(self.square[y], node.square[c], node.vec[0], node.vec[0]+node.transform[0])
+            c+=1
+    
+        self.__set_pre_view__()

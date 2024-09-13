@@ -10,8 +10,8 @@ class BasisTreeNode(BasisNode):
         self.__update_father__()
         
     def __child_node__(self, components:list):
-        self.father:BasisNode = ...
-        self.in_id :int       = ...
+        self.father:list[BasisNode] = []
+        self.in_id :list[int]       = []
         
         self.comp_fa = components
         
@@ -21,12 +21,10 @@ class BasisTreeNode(BasisNode):
     def add_child(self, node:BasisNode, is_new:bool=True):
         self.can_be_child (node, throw=True)
         node.can_be_father(self, throw=True) 
-        if node.father != ... and node.father != self:
-            raise IncorrectTypeNode(node)
         
         if is_new:
-            node.in_id  = self.child_tlt
-            node.father = self
+            node.in_id .append(self.child_tlt)
+            node.father.append(self)
             
             node.__update_child__()
             
@@ -53,14 +51,19 @@ class BasisTreeNode(BasisNode):
         self.can_be_child (child, throw=True)
         child.can_be_father(self , throw=True)    
          
+        ID = child.father.index(self)
+        
         if is_new:
             if kind == "static":
-                self.child_lst[child.in_id]=0
+                self.child_lst[ID]= 0
+                child.father[ID]  = 0
             elif kind == "dinamic":
                 self.child_tlt-=1
-                del self.child_lst[child.in_id]
-                for i in range(child.in_id, self.child_tlt):
-                    self.child_lst[i].in_id -= 1
+                del self.child_lst[ID]
+                for i in range(ID, self.child_tlt):
+                    IN_ID = self.child_lst[i].father.index(self)
+                    
+                    self.child_lst[i].in_id[IN_ID] -= 1
                     self.child_lst[i].__set_meta__("in_id", self.child_lst[i].in_id)
             
             self.__update_father__()
@@ -73,20 +76,20 @@ class BasisTreeNode(BasisNode):
             print("Metodo 'deleter' no encontrado, continuando con la ejecución")
         
     def can_be_child(self, node:BasisNode,*,throw:bool=False) -> bool:
-        if node.abs in self.comp_ch or hasattr(node, "father"):
+        if hasattr(node, "father") and node.abs in self.comp_ch:
             return True
         else:
             if throw:
-                raise IsNotAChild(node)
+                raise IsNotAChild(node, self)
             else:
                 return False
      
     def can_be_father(self, node:BasisNode,*,throw:bool=False) -> bool:
-        if node.abs in self.comp_fa or hasattr(node, "child_tlt"):
+        if hasattr(node, "child_tlt") and node.abs in self.comp_fa:
             return True
         else:
             if throw:
-                raise IsNotFather(node)
+                raise IsNotFather(node, self)
             else:
                 return False
      
@@ -101,7 +104,8 @@ class BasisTreeNode(BasisNode):
         self.child_lst[child_to.in_id  ] = tmp
         
         self.__update_father__()
-      
+        
+
     def move_father(self, father_to:BasisNode):
         self     .can_be_father(father_to, throw=True)
         father_to.can_be_father(self     , throw=True)

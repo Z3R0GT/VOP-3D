@@ -95,6 +95,7 @@ class BasisTreeNode(BasisNode):
             bool: representación de la pregunta
         """
 
+    @deprecated("Requiere de un reemplanteamiento por IN_ID como list(int)", stacklevel=3)
     def move_child(self, child_from:BasisNode, child_to:BasisNode) -> None:
         """Mover un nodo a otra posición de otro hijo, siempre ambos
         sean hijos del mismo nodo
@@ -103,7 +104,8 @@ class BasisTreeNode(BasisNode):
             child_from (BasisNode): hijo desde
             child_to (BasisNode): hijo hasta
         """
-
+        
+    @deprecated("Requiere de un reemplanteamiento por IN_ID como list(int)", stacklevel=3)
     def move_father(self, father_to:BasisNode) -> None:
         """Reemplazar el actual padre a otro de un nodo hijo
 

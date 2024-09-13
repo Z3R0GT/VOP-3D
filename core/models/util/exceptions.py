@@ -69,16 +69,16 @@ class IncorrectTypeNode(TypeError):
 #######################
 #######################
 class IsNotAChild(AttributeError):
-    def __init__(self, node, *args: object) -> None:
+    def __init__(self, node, node_to, *args: object) -> None:
         """Lanzado cuando un nodo no es un hijo"""
-        self.message = f"El objeto {node.name} no es un hijo o no puede ser hijo"
+        self.message = f"El objeto {node.name} <---> {type(node)} no es un hijo o no puede ser hijo de {node_to.name} <---> {type(node_to)}"
         self.foo = node
         super().__init__(self.message, *args)
         
 class IsNotFather(AttributeError):
-    def __init__(self, node, *args: object) -> None:
+    def __init__(self, node, node_to, *args: object) -> None:
         """Lanzado cuando un nodo no es un padre"""
-        self.message = f"El objeto {node.name} no es un padre o no puede ser padre"
+        self.message = f"El objeto {node.name} <---> {type(node)} no es un padre o no puede ser padre de {node_to.name} <---> {type(node_to)}"
         self.foo = node
         super().__init__(self.message, *args)
     

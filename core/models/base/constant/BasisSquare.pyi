@@ -1,5 +1,5 @@
 """
-Nodo base para todo objeto que tiene tamaño de pantalla
+Nodo base para todo objeto que tiene tamaño y posición en pantalla
 
 Contribuidores
 -------------

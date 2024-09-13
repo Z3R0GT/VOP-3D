@@ -21,6 +21,7 @@ from .BasisNode import *
 VIEWPORT_LIMIT:int
 """Limite dentro de la coordenada"""
 
+@overload
 def checker_coord(line:list[int, int, int]|list[int, int],
                   limit:list[int, int, int]|list[int, int]|Literal["ex"]
                   ):
@@ -34,6 +35,15 @@ def checker_coord(line:list[int, int, int]|list[int, int],
         IncorrectTypeNode: nodo incorrecto
         CoordNotFound: coordenadas no encontrada
         CoordExced: coordenada excedida
+    """
+@overload
+def checker_coord(node:BasisNode):
+    """_summary_
+
+    Args:
+        line (list[int, int]): _description_
+        limit (list[int, int]): _description_
+        throw (bool, optional): _description_. Defaults to False.
     """
     
 class BasisViewPort(BasisNode):

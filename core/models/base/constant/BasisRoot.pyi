@@ -43,3 +43,4 @@ class BasisRoot(BasisSquare, BasisTreeNode):
         Raises:
             HasNotChilds: lanzado en caso el nodo no tenga hijo disponibles
         """
+    
