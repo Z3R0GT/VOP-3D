@@ -20,21 +20,8 @@ Modulos incluidos
     overload: 3.12
         Función del modulo typing desde overload
 """
-from time import *
-
 from ...util import *
-
-
-def _set_name_(nme:str, nme_dtf:Literal["DEFAULT + NRO"]|list|tuple) -> str:
-    """Crear un nombre por defecto en caso la literal no sea dado
-
-    Args:
-        nme (str): nombre literal
-        nme_dtf (Literal[&quot;DEFAULT + NRO&quot;]): nombre dado
-
-    Returns:
-        str: nombre final
-    """
+from ..tools.logic import *
 
 class BasisNode:
     """Clase por defecto de cualquier objeto visto o no en pantalla
@@ -48,15 +35,16 @@ class BasisNode:
     
         self.meta   :dict
     
-    def __set_meta__(self, nme:str, kwr:str|int|list|tuple|dict) -> None:
+    def set_meta(self, nme:str, kwr:str|int|list|tuple|dict) -> None:
         """Crea una llave dado un valor para el objeto
 
         Args:
             nme (str): llave
             kwr (str | int | list | tuple | dict): valor
         """
-        
-    def _edit_meta_(self, nme:str, kwr:str|int|list|tuple|dict, pos:str|int=...) -> None:
+    
+    @deprecated("Se requiere pensar como simplificarlo usando herramientas actuales", stacklevel=3)
+    def edit_meta(self, nme:str, kwr:str|int|list|tuple|dict, pos:str|int=...) -> None:
         """Edita el valor de un objeto
 
         Args:
@@ -64,17 +52,7 @@ class BasisNode:
             kwr (str | int | list | tuple | dict): valor
             pos (str | int, optional): en caso que el valor sea lista, dar la posición. Defaults to ....
         """
-        
-    def get_meta(self, isPrint:bool=True) -> dict:
-        """Imprime la información de meta (y la retorna)
 
-        Args:
-            isPrint (bool, optional): ¿se puede imprimir?. Defaults to True.
-
-        Returns:
-            dict: representación de la actual meta
-        """
-        
     def get_meta(self, isPrint:bool=True) -> dict:
         """Imprime la información de meta (y la retorna)
 

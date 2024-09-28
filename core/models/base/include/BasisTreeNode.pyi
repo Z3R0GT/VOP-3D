@@ -43,7 +43,7 @@ class BasisTreeNode(BasisNode):
         self.in_id :int
         
         self.comp_fa:list[str]
-        
+    
     def add_child(self, node:BasisNode, is_new:bool=True) -> None:
         """Agrega un hijo al nodo (usa 'can_be_father') para
         verificar su el nodo puede o no ser usado
@@ -52,72 +52,64 @@ class BasisTreeNode(BasisNode):
             node (BasisNode): nodo a agregar
             is_new (bool, optional): ¿ya fue agregado antes?. Defaults to True.
         """
-        
-    def edit_child(self, child:BasisNode, *args) -> None:
-        """Edita las propiedades un hijo
+    ################
+    # Requiere documentación nueva
+    # ###############    
+    @deprecated("requiere de un plateamiento claro", stacklevel=3)
+    def edit_child(self, node:BasisNode, **kwargs):
+        """_summary_
 
         Args:
-            child (BasisNode): propiedades
+            node (BasisNode): _description_
         """
         
-    def del_child(self, child:BasisNode,*, is_new:bool=True, kind:Literal["static", "dinamic"]="static") -> None:
-        """Borra a un hijo de manera opcional/definitiva
+    def del_child(self, node:BasisNode, *, kind:Literal["static", "dinamic"]="static", is_new:bool=True):
+        """_summary_
 
         Args:
-            child (BasisNode): 
-                nodo a borrar
-            is_new (bool, optional): 
-                ¿ya fue agregado antes?. Defaults to True.
-            kind (Literal[&quot;static&quot;, &quot;dinamic&quot;], optional): 
-                static: Solo reemplaza la posición del nodo 
-                dinamic: hace como si el nodo nunca hubiera existido. Defaults to "static".
+            node (BasisNode): _description_
+            kind (Literal[&quot;static&quot;, &quot;dinamic&quot;], optional): _description_. Defaults to "static".
+            is_new (bool, optional): _description_. Defaults to True.
         """
         
-    def can_be_child(self, node:BasisNode,*,throw:bool=False) -> bool:
-        """Indica si un nodo puede ser o no un hijo
+    def find_child(self, node:BasisNode) -> int:
+        """_summary_
 
         Args:
-            node (BasisNode): nodo a consultar
-            throw (bool, optional): ¿puede soltar una error?. Defaults to False.
+            node (BasisNode): _description_
 
         Returns:
-            bool: representación de la pregunta
+            int: _description_
         """
         
-    def can_be_father(self, node:BasisNode,*,throw:bool=False) -> bool:
-        """Indica si un nodo puede ser o no un padre
+    def can_be_added(self, node:BasisNode, *, kind:Literal["ch", "fa"]="ch", throw:bool=False) -> bool:
+        """_summary_
 
         Args:
-            node (BasisNode): nodo a consultar
-            throw (bool, optional): ¿puede soltar una error?. Defaults to False.
+            node (BasisNode): _description_
+            kind (Literal[&quot;ch&quot;, &quot;fa&quot;], optional): _description_. Defaults to "ch".
+            throw (bool, optional): _description_. Defaults to False.
 
         Returns:
-            bool: representación de la pregunta
+            bool: _description_
         """
-
-    @deprecated("Requiere de un reemplanteamiento por IN_ID como list(int)", stacklevel=3)
-    def move_child(self, child_from:BasisNode, child_to:BasisNode) -> None:
-        """Mover un nodo a otra posición de otro hijo, siempre ambos
-        sean hijos del mismo nodo
+    
+    @deprecated("No se recomienda usar 'node_f' como argumento AÚN, el basico de mover un nodo a otra parte del codigo sigue siendo 'funcional' ")
+    @overload
+    def move_to(self, node_f:BasisNode|list[BasisNode], node_t:BasisNode|list[BasisNode])->None:
+        """_summary_
 
         Args:
-            child_from (BasisNode): hijo desde
-            child_to (BasisNode): hijo hasta
+            node_f (_type_): _description_
+            node_t (_type_): _description_
+        """
+    @overload
+    def move_to(self, node_f:BasisNode) -> None:
+        """_summary_
+
+        Args:
+            node_f (BasisNode): _description_
         """
         
-    @deprecated("Requiere de un reemplanteamiento por IN_ID como list(int)", stacklevel=3)
-    def move_father(self, father_to:BasisNode) -> None:
-        """Reemplazar el actual padre a otro de un nodo hijo
-
-        Args:
-            father_to (BasisNode): padre a reemplazar
-        """
-
-    def __update_child__(self):
-        """Actualiza el meta de un nodo hijo
-        """
-
-    def __update_father__(self):
-        """Actualiza el meta de un nodo padre
-        """
-
+        
+    

@@ -1,4 +1,0 @@
-MAPA_OBJ = []
-PANE_OBJ = []
-DOOR_OBJ = []
-OBJI_OBJ = []

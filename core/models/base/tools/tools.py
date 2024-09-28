@@ -3,13 +3,14 @@ from os import system
 
 from ...util import DEBUG_MODE
 
-FIXER_X_SIZE:int = 5
-FIXER_Y_SIZE:int = 6
+FIXER_X_SIZE:int=5
+FIXER_Y_SIZE:int=6
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 def erase_screen():
-    if not DEBUG_MODE[0]:
+    #if not DEBUG_MODE[0]:
+    if True:
         system("cls")
 
 

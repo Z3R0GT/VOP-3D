@@ -1,0 +1,21 @@
+"""
+[desc generica]
+
+Contribuidores
+-------------
+    [nombre] : [version] \n
+        [contacto]
+        
+    Z3R0_GT: 0.0.0.1 \n
+        contac.es.z3r0.gt@gmail.com
+
+Registro
+--------
+    [nombre] : [version]
+        [cosas hechas]
+
+Modulos incluidos
+-----------------
+    [nombre] : [version]
+        [desc. generica]
+"""

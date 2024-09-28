@@ -1,45 +1,36 @@
-from ...base.include.BasisButtons import *
+from ...base.include.layout.BasisUI import MARK_SCAPE
+from ...base.constant.function import *
 from ...base.include.BasisTreeNode import *
-from ..references import *
 
+from ..references import MENU_OBJ, BUTTONS_OBJ
 
-def __link__(*nm):
-    from webbrowser import open
-    open(nm[1])
-
-def __continue__(*nm):
+def __queque__(*args, **kwargs):
+    exit()
+    
+def __continue__(*args, **kwargs):
     return
 
-def __queque__(*nm):
-    exit()
-
-def __save__():
-
-    print("SAVE WIP")
-
-def __load__():
-
-    print("LOAD WIP")
+def __link__(*args, **kwargs):
+    from webbrowser import open
+    contains(kwargs, ["value"], throw=True)
+    open(secure_type_one(value=kwargs["value"], kind=True))
     
-
-def __main_menu__(*nm):
-    MENU_OBJ[0].start_cast()
-
-def __back__(*nm):
-    inp = nm[0]
-    var = nm[1]
-    try:
-        MENU_OBJ[var].start_cast()
-    except IndexError:
-        print_debug("MENU NO ENCONTRADO")
-        
-COMPONENTS_BTN_FA:list[str]= ["pnl", "men"]
-class Buttons(BasisButtons, BasisTreeNode):
-    def __init__(self, 
-                 name: str, 
-                 x: int, 
-                 y: int, 
-                 text:str="",
+def __main_menu__(*args, **kwargs):
+    #TODO: requiere un reemplanteamiento
+    #MENU_OBJ[0]
+    print(kwargs)
+    ...
+    
+def __back__(*args, **kwargs):
+    #Función empleada para llamar a un menu X y iniciar su cast
+    print(kwargs)
+    ...
+    
+COMPONENTS_BTN_FA:list[str] = ["pnl", "men"]
+class Buttons(Function, BasisTreeNode):
+    def __init__(self, name: str, 
+                 text: str,
+                 x: int, y: int, 
                  comment: str | None = None,
                  default:Literal["EXIT", 
                                  "LOAD", 
@@ -52,31 +43,23 @@ class Buttons(BasisButtons, BasisTreeNode):
                                  "CONTINUE", 
                                  "CUSTOM"]="CUSTOM",
                 action=...) -> None:
-        
-        super().__init__(name, len(BUTTONS_OBJ), "btn", text, x, y, comment)
+        super().__init__(name, text, 
+                         len(BUTTONS_OBJ), "btn", 
+                         x, y, 
+                         comment)
         super().__child_node__(COMPONENTS_BTN_FA)
-
-        self.in_id:int = 0
-
-        self.cast= ("")
-        self.var = []
-
+        super().__func__(action)
+        
+        self.cast      = ("")
+        
         match default:
-            case "SAVE":
-                if text == "":
-                    self.character = "Guardar"
-                self.action = __save__
-            case "LOAD":
-                if text == "":
-                    self.character = "Cargar"
-                self.action = __load__
             case "EXIT":
-                if text == "":
-                    self.character = "Salir"
+                if text== "":
+                    self.character ="Salir"
                 self.action = __queque__
             case "MAIN":
                 if text == "":
-                    self.character = "Regresar"
+                    self.character = "Menu"
                 self.action = __main_menu__
             case "BACK":
                 if text == "":
@@ -89,20 +72,22 @@ class Buttons(BasisButtons, BasisTreeNode):
                 self.var = action
             case "CONTINUE":
                 if text == "":
-                    self.character = "Continuar"
+                    self.character = text
                 self.action = __continue__
             case "CUSTOM":
                 self.action = action
             case _:
                 self.action = action
-
+        
         BUTTONS_OBJ.append(self)
         
-    def caster(self, msg:tuple[str]=(""), *var):
-        """Setea las variable 'cast' y 'var' para su uso posterior (no retreactivo)
-
-        Args:
-            msg (tuple[str], optional): conjunto de mensaje a mostrar en pantalla. Defaults to ("").
-        """
+    def caster(self, msg:tuple[str]=(""), **kwargs):
         self.cast = msg
-        self.var = list(var)
+        self.var = kwargs
+                
+    def input(self):
+        _in_ = []
+        
+        for msg in list(self.cast):
+            _in_.append(input(f"{msg}{MARK_SCAPE}"))
+        self.action(*_in_, **self.var)

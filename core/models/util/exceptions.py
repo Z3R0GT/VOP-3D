@@ -12,7 +12,11 @@ Registro
 --------
     Coordenadas: 0.0.0.1
         * se agregaron excepciones para las coordenadas 
-    
+
+Modulos incluidos
+-----------------
+    typing_extensions: 3.12
+        * usado para decoración
 
 """
 from typing_extensions import *
@@ -23,26 +27,30 @@ from typing_extensions import *
 #######################
 #######################
 class CoordNotFound(ValueError):
-    def __init__(self, coord:list, *args: object) -> None:
-        """Lanzado cuando las coordenadas no son suficientes"""
+    """Lanzado cuando las coordenadas no son suficientes"""
+    def __init__(self, coord:list[int], *args: object) -> None:
         self.message = f"Se necesitan una o más coordenadas ({coord}, {len(coord)})"
-        self.foo = coord
-        super().__init__(self.message,*args)
-        
-class CoordInConflic(ValueError):
-    def __init__(self, node_from, node_to, *args: object) -> None:
-        """Lanzado cuando la coordenada esta en conflicto a otra"""
-        self.message = f"El nodo ({node_from.name}) esta en conflicto con {node_to.name} \nMETA {node_from.name}: {node_from.meta}\nMETA {node_to.name}: {node_to.meta}"
-        self.foo = (node_from, node_to)
-        super().__init__(self.message,*args)
-        
-class CoordExced(ValueError):
-    def __init__(self, limit_from:list[int, int]|int, limit_to:list[int, int]|int, *args: object) -> None:
-        """Lanzado cuando alguna coordenada esta fuera del limite"""
-        self.message = f"Una o más coordenadas están fuera del limite; obtenida: {limit_from} limite: {limit_to}"
-        self.foo = (limit_from, limit_to)
+        self.foo     = coord
         super().__init__(self.message, *args)
-        
+
+class CoordInConflict(ValueError):
+    """Lanzado cuando la coordenada esta en conflicto a otra"""
+    def __init__(self, node_f, node_t, *args: object) -> None:
+        self.message = f"El nodo {node_f.name} esta en conflicto con {node_t.name}\n\
+            Coordenada desde: {node_f.vec}\n\
+            Coordenada hasta: {node_t.vec}"
+        self.foo = (node_f, node_t)
+        super().__init__(self.message, *args)
+
+class CoordExced(ValueError):
+    """Lanzado cuando alguna coordenada esta fuera del limite"""
+    def __init__(self, limit_f:list[int, int]|int, limit_t:list[int, int]|int, *args: object) -> None:
+        self.message = f"Una o más coordenadas estan fuera de los limites\n\
+            Coordenada ingresada: {limit_f}\n\
+            Coordenada limite:    {limit_t}"
+        self.foo = (limit_f, limit_t)
+        super().__init__(self.message, *args)
+
 
 #######################
 #######################
@@ -50,43 +58,70 @@ class CoordExced(ValueError):
 #######################
 #######################
 class IncorrectVector(TypeError):
-    def __init__(self, node, *args: object) -> None:
-        """Lanzado cuando el vector no es una lista"""
-        self.message = f"Se necesita una lista, no {type(node)}"
-        self.foo = node
+    """Lanzado cuando el vector no es una lista"""
+    def __init__(self, node_f, node_t:str, *args: object) -> None:
+        self.message = f"Se esperada un {node_t} no {type(node_f)}"
+        self.foo = (node_f, node_t)
         super().__init__(self.message, *args)
 
 class IncorrectTypeNode(TypeError):
-    def __init__(self, node,*args: object) -> None:
-        """Lanzado cuando un nodo es incorrecto"""
-        self.message = f"El nodo {type(node)} <--> {node} no es compatible"
-        self.foo = node
+    """Lanzado cuando un nodo es incorrecto"""
+    def __init__(self, node_f, node_t:list, *args: object) -> None:
+        self.message = f"EL nodo dado no es compatible con el actual\n\
+            Dado:     {node_f.abs}/{type(node_f)} \n\
+            Esperado: {node_t}"
+        self.foo = (node_f, node_t)
         super().__init__(self.message, *args)
-        
+
+
 #######################
 #######################
 #     Arbol nodos     #
 #######################
 #######################
-class IsNotAChild(AttributeError):
-    def __init__(self, node, node_to, *args: object) -> None:
-        """Lanzado cuando un nodo no es un hijo"""
-        self.message = f"El objeto {node.name} <---> {type(node)} no es un hijo o no puede ser hijo de {node_to.name} <---> {type(node_to)}"
-        self.foo = node
+class IsNotAChild(BaseException):
+    """Lanzado cuando un nodo no es un hijo"""
+    def __init__(self, node_f, node_t, *args: object) -> None:
+        self.message = f"El nodo no puede ser hijo\n\
+            Dado:  {node_f.name}/{type(node_f)}\n\
+            Padre: {node_t.name}/{type(node_t)}"
+        self.foo = (node_f, node_t)
+        super().__init__(self.message, *args)
+
+class IsNotAFather(BaseException):
+    def __init__(self, node_f, node_t, *args: object) -> None:
+        self.message = f"El nodo no puede ser padre\n\
+            Dado:  {node_f.name}/{type(node_f)}\n\
+            hijo: {node_t.name}/{type(node_t)}"
+        self.foo = (node_f, node_t)
+        super().__init__(self.message, *args)
+
+class NotChildsIn(BaseException):
+    """Lanzado cuando se referencia a un hijo que no existe"""
+    def __init__(self, node_f, node_t, *args: object) -> None:
+        self.message = f"El nodo actual no tiene hijo\n\
+            Referenciado: {node_f.name}/{type(node_f)}\n\
+            Nodo:         {node_t.name}/{type(node_t)}"
+        self.foo = (node_f, node_t)
         super().__init__(self.message, *args)
         
-class IsNotFather(AttributeError):
-    def __init__(self, node, node_to, *args: object) -> None:
-        """Lanzado cuando un nodo no es un padre"""
-        self.message = f"El objeto {node.name} <---> {type(node)} no es un padre o no puede ser padre de {node_to.name} <---> {type(node_to)}"
-        self.foo = node
-        super().__init__(self.message, *args)
-    
-@deprecated("Posiblemente se cambie 'IndexError' y 'HasNotChilds' por un nombre mejor", stacklevel=3)
-class HasNotChilds(IndexError):
-    def __init__(self, node, *args: object) -> None:
-        """Lanzado cuando un nodo no tiene hijos"""
-        self.message = f"El objeto {node.name} no tiene hijos"
-        self.foo = node
+class NotFathersIn(BaseException):
+    """Lanzado cuando se referencia a un padre que no existe"""
+    def __init__(self, node_f, node_t, *args: object) -> None:
+        self.message = f"El nodo actual no tiene por padre o no tiene padres\n\
+            Referenciado: {node_f.name}/{type(node_f)}\n\
+            Nodo:         {node_t.name}/{type(node_f)}"
+        self.foo = (node_f, node_t)
         super().__init__(self.message, *args)
         
+class NodeDuplicade(BaseException):
+    """Lanzado cuando un nodo ya existe"""
+    def __init__(self, node_f, node_p, node_t, *args: object) -> None:
+        self.message = f"El nodo ya existe dentro del padre\n\
+            Referenciado:  {node_f.name}/{type(node_f)}\n\
+            ID de creación:{node_p}\n\
+            Nodo:          {node_t.name}/{type(node_t)}"
+        self.foo = (node_f, node_t, node_p)
+        super().__init__(self.message, *args)
+
+

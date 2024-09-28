@@ -10,8 +10,6 @@ Registro
 --------
     defecto: 0.0.0.1
         * variables de testeo 
-    
-
 """
 
 DEBUG_MODE = [True]

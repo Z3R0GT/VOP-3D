@@ -1,35 +1,27 @@
 from core import *
 
-def uwu(ins, var):
-    print(ins, var)
+#DEBUG_MODE[0] = False
+"""
+player = Player("uwu", chr="X", x=13, y=3)
 
-#a = Menu("uwu", 10, 20, "#")
-#n = Buttons("owo", 1, 1, "hola", action=uwu)
-#a.add_child(n)
+house = Structure("stu", chr="&", x=1, y=4, sz_x=10, sz_y=10)
+house.generate_lines("-Y", Y_CORD=[2, 5], X_CORD=[1, 6])
+house.del_geometry(ID=[1])
 
-my_map = Mapa("UWU", 100, 20, "#")
-stu_1 = Structure("uwu", 1, 1, 20, 10, "#")
-stu_2 = Structure("owo", 32, 1, 20, 10, "#")
+door = Door("uwu", x=2, y=0, chr="M", multi=4)
+house.add_child(door)
+door = Door("mom", 9, 2, "M", pos=False, multi=4)
+house.add_child(door)
 
-stu_1_1 = Structure("asd", 1, 2, 4, 4, "#")
+scene = Mapa("ma", "#", x=30, y=15)
+scene.add_child(node=house)
+scene.add_child(node=player)
 
-d = Door("uw", 1, 1, "D", multi=4)
-v = Door("uw", 1, 1, "D", multi=4)
-
-stu_1.add_child(d)
-stu_1.add_child(stu_1_1)
-
-
-#stu_1.get_pre_view()
-#stu_2.add_child(v)
-
-my_map.add_child(stu_1)
-#my_map.add_child(stu_2)
+sword = Sword("Legendary Mile Sword", 15, 3)
+scene.add_child(sword)
 
 
-#my_map.get_meta()
-my_map.get_pre_view()
-#input()
-#my_map.del_child(stu_1)
-#my_map.get_meta()
-#my_map.get_pre_view()
+house = Camera("main", zone=scene, look=player, static=False)
+#scene.get_pre_view()
+#start_game_2d()
+"""
