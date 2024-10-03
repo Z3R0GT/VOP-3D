@@ -1,7 +1,7 @@
 from core import *
 
 #DEBUG_MODE[0] = False
-"""
+
 player = Player("uwu", chr="X", x=13, y=3)
 
 house = Structure("stu", chr="&", x=1, y=4, sz_x=10, sz_y=10)
@@ -22,6 +22,5 @@ scene.add_child(sword)
 
 
 house = Camera("main", zone=scene, look=player, static=False)
-#scene.get_pre_view()
+scene.get_pre_view()
 #start_game_2d()
-"""
