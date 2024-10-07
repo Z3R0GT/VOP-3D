@@ -1,3 +1,17 @@
+## Ultima cosa tocada
+
+## tarea actual (modo)
+### **2**
+
+
+| **Cosa** | **id** |
+|-|-|
+|Agregar funciones | 1|
+|hacer algo de la lista to do | 2| 
+|arreglar algún bug | 3 |
+|planificar | 4 | 
+|tirarse por un puente | 5 |
+
 ## Listado de cosas por hacer según nivel de importancia
 Ultima actualización: 26/09/2024
 
@@ -27,6 +41,8 @@ Ultima actualización: 26/09/2024
 |22| simplificar funciones _num_in_rng y _inter en [Mov](/core/models/data/d2/base/mov.py) | ❌ |
 |23| agregar sistema de logros | ❌ |
 |24| agregar secciones para creditos (disporse por todo el motor y [main](/main.py)) | ❌ |
+|25| refactorizar desde [BasisSquare](/core/models/base/include/BasisSquare.py) a un tipo más general para separar las funciones de square/triangule ([Figure](/core/models/data/d2/base/include/figure.py) )y otras futuras figuras geometricas basicas para mantener la capacidad en funcionamiento | ❌
+|26| reemplantearse la logica detras de la como se crean los objetos en pantalla para que soporten multiples figuras (fuera de solo cuadrado [Figure](/core/models/data/d2/base/include/figure.py))  | ❌ |
 ## Autores originales
 - [Z3R0_GT](https://github.com/Z3R0GT/)
 - EDUARDO OJEDA, DIEGO ANDRES : primer speed runner en acabar el juego (presiono 10 veces una tecla) y primer beta tester

@@ -2,6 +2,7 @@ from core.models.base.tools.maths import insert
 from .include.chunks import *
 from .include.figure import *
 
+#TODO: requiere re estructuración para organizar mejor las formas
 class Object2D(Figures, Chunkcs):
     def __init__(self, name: str, 
                  id: int, abs: str, 

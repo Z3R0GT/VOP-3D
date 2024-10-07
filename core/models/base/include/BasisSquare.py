@@ -67,7 +67,6 @@ class BasisSquare(Vector):
             else:
                 self.square.append(tmp)
 
-
         self.set_pre_view()
         
     def set_frame_num_square(self):
