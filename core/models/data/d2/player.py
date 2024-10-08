@@ -83,7 +83,7 @@ class Player(Skeleton, Stats):
     def adder(self, node):
         node = secure_type_one(node=node, abs="obj")
         re = node.canEffect(self.stats)
-        
+        print(node.name)
         if re:
             self.apply_effects(re)
             return True

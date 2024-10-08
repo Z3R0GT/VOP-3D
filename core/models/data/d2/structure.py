@@ -4,10 +4,11 @@ from ...base.include.BasisTreeNode import *
 from ..references import STU_OBJ, DOO_OBJ
 
 COMPONENTS_STU_FA = ["map"]
-COMPONENTS_STU_CH = ["dor", "pla"]
+COMPONENTS_STU_CH = ["dor", "pla", "obj"]
 
 COMPONENTS_DOO_FA = ["stu"]
 
+COMPONENTS_EXE:list[str] = ["pla"]
 @final
 class Door(Vector, BasisTreeNode):
     def __init__(self, name: str, 
@@ -36,7 +37,7 @@ class Structure(Object2D, BasisTreeNode):
                  sz_x:int, sz_y:int,
                  comment: str | None = None) -> None:
         super().__init__(name, len(STU_OBJ), "stu", chr, x, y, comment)
-        super().__mem_chunks__()
+        super().__mem_chunks__(COMPONENTS_EXE)
         super().__square__()
         super().__transform__(size_x=sz_x, size_y=sz_y)
         
@@ -55,7 +56,6 @@ class Structure(Object2D, BasisTreeNode):
         match node.abs:
             case "dor":
                 checker(line=node.vec, limit=self.transform, vector=2)
-                
                 #caso de X
                 if node.info[0]:
                     txt = node.character*node.info[1]
@@ -66,6 +66,11 @@ class Structure(Object2D, BasisTreeNode):
                 self.set_pre_view()
             case "stu":
                 self.insert_square(node)
+            case "obj":
+                self.square[node.vec[1]] = insert(self.square[node.vec[1]], 
+                                                  node.character, 
+                                                  node.vec[0], node.vec[0]+1)
+                self.set_pre_view()
         self.generate_chunks()
         
     #NOTE: recordar que el resultado  de caracter a mostrar siempre sera 

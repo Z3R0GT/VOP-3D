@@ -1,7 +1,7 @@
 from ..include.BasisNode import *
 
-COMPONENTS_VE = ["men", "map", "txt", "pla", "obj", "dor"]
-COMPONENTS_TF = ["pnl", "stu"]
+COMPONENTS_VE = ["men", "map", "txt", "pla", "obj"]
+COMPONENTS_TF = ["pnl", "stu", "dor"]
 
 __vector_2d_att__ = ["chr", "x", "y"]
 __vector_3d_att__ = ["chr", "x", "y", "z"]
@@ -40,6 +40,10 @@ class Vector(BasisNode):
             self.set_meta("transform", self.transform)
         else:
             raise TypeError("El objeto requiere más argumento de los dados")
+    
+    #TODO: agregar a todas las instancias de Vector esta función
+    def copy(self):
+        ...
     
     def kind_vector(self) -> tuple[list[int, int], Literal["vec", "trans"]]:
         if self.abs in COMPONENTS_VE:

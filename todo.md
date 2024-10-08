@@ -1,7 +1,7 @@
 ## Ultima cosa tocada
 
 ## tarea actual (modo)
-### **2**
+### **1**
 
 
 | **Cosa** | **id** |
@@ -28,7 +28,7 @@ Ultima actualización: 26/09/2024
 |9|agregar retornos REALES de cada función| ❌|
 |10|revisar el codigo en busca de posibles no verificaciones de tipos usando secure_type_one | ❌ |
 |11| reestructurar codigo/importaciones desde [BasisTreeNode](/core/models/base/include/BasisTreeNode.py) o colocar MEJORES verificadores de "valores" | ❌ |
-|12| la función "next_to" de "mapa" debe recibir por argumento un nodo para obtener su .vec correspondiente | ❌|
+|12| la función "next_to" de "mapa" debe recibir por argumento un nodo para obtener su .vec correspondiente | ✔ |
 |13| agregar unas instrucciones de "move_to" de [BasisMove](/core/models/base/constant/BasisMover.py) para que actualize el vector usando los .in_y/in_x correspondientes al objeto dado | ❌ |
 |14| refactorizar nombres que empiezen con "Basis" o similares | ❌ |
 |15| darle a cada variable un tipo (dentro de los posible) | ❌ |
@@ -43,6 +43,10 @@ Ultima actualización: 26/09/2024
 |24| agregar secciones para creditos (disporse por todo el motor y [main](/main.py)) | ❌ |
 |25| refactorizar desde [BasisSquare](/core/models/base/include/BasisSquare.py) a un tipo más general para separar las funciones de square/triangule ([Figure](/core/models/data/d2/base/include/figure.py) )y otras futuras figuras geometricas basicas para mantener la capacidad en funcionamiento | ❌
 |26| reemplantearse la logica detras de la como se crean los objetos en pantalla para que soporten multiples figuras (fuera de solo cuadrado [Figure](/core/models/data/d2/base/include/figure.py))  | ❌ |
+|27| reemplantearse la logica de agregar hijos repetidos, es decir, que un nodo pueda tener más "copias" de un mismo hijo, en diferentes posiciones, pero tenga la capacidad de en caso ser necesario, borrarlo | ❌ |
+|28| agregar casos por "defecto" a los objetos que hereden de [TreeNode](/core/models/base/include/BasisTreeNode.py) para la función "adder" si es que no encuentran una forma de agregar dicho nodo | ❌|
+|30| agregar funciones getter para toda MIERDA | ❌ |
+|31| agregar función base a los que heredes de [Vector](/core/models/base/constant/Vector.py) para que puedan se duplicado/copiados (ES BASTANTE UTIL)| ❌ |
 ## Autores originales
 - [Z3R0_GT](https://github.com/Z3R0GT/)
 - EDUARDO OJEDA, DIEGO ANDRES : primer speed runner en acabar el juego (presiono 10 veces una tecla) y primer beta tester

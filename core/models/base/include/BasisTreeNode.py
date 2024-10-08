@@ -74,8 +74,11 @@ class BasisTreeNode(BasisNode):
                 del self.child_lst[ID]
                 for i in range(ID, self.child_tlt):
                     nod = self.child_lst[i]
-                    IN_ID = nod.in_id[nod.father.index(self)]
-                    nod.in_id[IN_ID] -= 1
+                    #BUG: en caso se bug, el concepto es que el nodo hijo restante, 
+                    # se reste su propio IN_ID apartir del que fue borrado
+                    nod.in_id[nod.father.index(self)]-=1
+                    #print(IN_ID)
+                    #nod.in_id[IN_ID] -= 1
                     nod.set_meta("in_id", nod.in_id)
 
             self.update_node()

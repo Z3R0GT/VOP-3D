@@ -52,6 +52,8 @@ class Mapa(Object2D, BasisTreeNode):
                 #insertar codigo de borra aqui
                 ...
             case "obj":
-                ...        
+                self.square[node.vec[1]] = insert(self.square[node.vec[1]], 
+                                                  " ", 
+                                                  node.vec[0], node.vec[0]+1)    
                 
         self.generate_chunks()

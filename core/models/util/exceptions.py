@@ -72,8 +72,12 @@ class IncorrectTypeNode(TypeError):
             Esperado: {node_t}"
         self.foo = (node_f, node_t)
         super().__init__(self.message, *args)
-
-
+class UnknowError(BaseException):
+    """Lanzado cuando error desconocido ocurre"""
+    def __init__(self, *args: object) -> None:
+        self.message = "¿Como llegaste aqui?"
+        
+        super().__init__(self.message, *args)
 #######################
 #######################
 #     Arbol nodos     #
