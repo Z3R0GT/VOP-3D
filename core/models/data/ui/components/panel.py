@@ -21,7 +21,7 @@ class Panel(BasisUI, BasisTreeNode):
         if DEBUG_MODE[0]:
             self.set_frame_num_square()
         PANEL_OBJ.append(self)
-        
+         
     def adder(self, node):
         match node.abs:
             case "lbl":

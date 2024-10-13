@@ -2,6 +2,7 @@ from ...base.include.layout.BasisUI import *
 from ...base.include.BasisTreeNode import *
 from ...base.tools.maths import insert
 from .components.panel import Panel
+from ..custom.Label import *
 from .buttons import Buttons
 
 from ..references import MENU_OBJ
@@ -12,80 +13,107 @@ class PanelList(Panel):
     def __init__(self, name: str, chr: str, 
                  x: int, y: int, 
                  sz_x: int, sz_y: int,
-                 list:list[str],
+                 lst:list[str],
                  render:int,
                  increment:int,
                  as_num:bool=False) -> None:
-        super().__init__(name, chr, x, y, sz_x, sz_y, "clase predefinida")
-        self.list = list
-
+        super().__init__(name, chr, x, y, sz_x, sz_y, "pre_def_name")
+        
+        self.list:list[Label] = []
+        for i in range(len(lst)):
+            self.list.append(Label("n", lst[i], 1, i+1))
+        
         self.render = render
         self.increment = increment
         self.as_num = as_num
         
         self.current = [0, render]
         
-    def _next_up(self, *args):
-        self.current[0] += self.increment
-        self.current[1] += self.increment
         
-        self.update_lst()
-        print(args)
+    def _next_up(self, *args):
+        if self.current[1] < len(self.list):
+            self.current[0] += self.increment
+            self.current[1] += self.increment
+        
+        self.refresh(True)
         
     def _next_back(self, *args):
-        self.current[0] -= self.increment
-        self.current[1] -= self.increment
-        
-        self.update_lst()
-        print(args)
+        if self.current[1] >= 0:
+            self.current[0] -= self.increment
+            self.current[1] -= self.increment
+
+        self.refresh(True)
 
     def _input(self, *args):
-        print(args, self.current)
-
-
-    def setup_btns_in(self, back:Buttons, next:Buttons, input:Buttons):
+        num = int(input(f"Ingrese ID de la opción{MARK_SCAPE}"))+self.current[0]
+        if not num in range(self.current[0], self.current[1]):
+            from random import randint
+            num = randint(self.current[0], self.current[1])
+        for btn in self.ou:
+            btn.var["input"] = self.list[num].character
+        self.refresh(True)
+        
+    def setup_btns_in(self, back:Buttons, next:Buttons, input:Buttons=...):
         self.back = back
         self.next = next
-        self.inp = input
+        if not input == ...:
+            self.inp = input
+            self.inp.action  = self._input
         
         self.next.action = self._next_up
         self.back.action = self._next_back
-        self.inp.action  = self._input
 
     def setup_btns_ou(self, ou:list[Buttons]):
-        self.ou = ou
+        self.ou = list(ou)
+       
+    def refresh(self, start:bool=False):
+        self.update_list()
+        self.father[0].adder(self)
+        if start:
+            self.father[0].start()
         
-    def update_lst(self):
+    def update_list(self):
+        if self.current[1] > len(self.list):
+            return
+            
         #borra las lineas de texto
-        [self.create_text(" "*(self.transform[0]-2), "CUSTOM", [self.vec[0]+1, self.vec[1]+i+1]) for i in range(1, self.render-2)]
-
-        c = -1
+        [self.create_text(" "*(self.transform[0]-2), "CUSTOM", [1, i]) for i in range(1, self.render+1)]
+        
+        c = 1
         for line in range(self.current[0], self.current[1]):
-            #cuando llega al limite
             if line >= len(self.list):
-                self.deleter(self.next)
-                self.adder(self.back)
-                return 
+                break
             
             #actualiza el texto a mostrar (Posiblemente tenga bugs)
             if self.as_num:
-                self.create_text(f"{int(c%self.render)}) {self.list[line][:self.transform[0]-6]}",
-                                 "CUSTOM",
-                                 [self.vec[0]+1, int(line%self.render)+self.vec[0]+1])
+                self.create_text(
+                    f"{c}) {self.list[line].character[:self.transform[0]-6]}",
+                    "CUSTOM",
+                    [1, c]
+                )
             else:
-                self.create_text(self.list[line][:self.transform[0]-6],
-                                 "CUSTOM",
-                                 [self.vec[0]+1, int(line%self.render)+self.vec[0]+1])
-        
+                self.create_text(
+                    self.list[line].character[:self.transform[0]-6],
+                    "CUSTOM",
+                    [1, c]
+                )
+            c+=1
+            
+        if line >= self.current[1]:
+            self.father[0].deleter(self.next)
+            self.father[0].adder(self.back)
         #minimo
-        if self.current[1] == self.render:
-            self.adder(self.next)
-            self.deleter(self.back)
+        elif self.current[1] == self.render:
+            self.father[0].adder(self.next)
+            self.father[0].deleter(self.back)
             return
+        else:
+            #intermediario
+            self.father[0].adder(self.next)
+            self.father[0].adder(self.back)
         
-        #intermediario
-        self.adder(self.next)
-        self.adder(self.back)
+        
+        
 
 class Menu(BasisUI, BasisTreeNode):
     def __init__(self, name: str, 
@@ -106,14 +134,16 @@ class Menu(BasisUI, BasisTreeNode):
         MENU_OBJ.append(self)
         
     def adder(self, node:Buttons|Panel):
-        
         match node.abs:
             case "btn":
-                text = f"{len(self.btns)+1}) {node.character}"
-                #if len(text)-node.vec[0] >= self.vec[0]:
-                #    raise CoordExced(text, self.vec[0])
+                if not node.id in [i.id for i in self.btns]:
+                    self.btns.append(node)
+                    num = node.in_id[node.father.index(self)]
+                else:
+                    num =self.btns[self.btns.index(node)].in_id[node.father.index(self)]
+                    
+                text = f"{num}) {node.character}"
                 
-                self.btns.append(node)
                 self.create_text(text, "CUSTOM", node.vec)
             case "lbl":
                 self.create_text(node.character, "CUSTOM", node.vec)
@@ -131,7 +161,9 @@ class Menu(BasisUI, BasisTreeNode):
                                             node.vec[0],
                                             node.transform[0]+node.vec[0])
                 self.set_pre_view()
-                self.panel.append(node)
+                if not node.id in [i.id for i in self.panel]:
+                    self.panel.append(node)
+                
                 
     def deleter(self, node:Buttons|Panel):
         
@@ -155,8 +187,8 @@ class Menu(BasisUI, BasisTreeNode):
         if not DEBUG_MODE[0] or auto_size:
             size_screen(self.vec[0], self.vec[1])
         else:
-            erase_screen()
-        
+            #erase_screen()
+            ...
         self.get_pre_view()
         
         if True:
@@ -175,4 +207,3 @@ class Menu(BasisUI, BasisTreeNode):
         #except (ValueError, IndexError) as e:
         #    print(e)
 
-    ...

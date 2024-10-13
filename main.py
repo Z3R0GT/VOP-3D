@@ -1,8 +1,10 @@
-from core import *
+from core.models import *
+from core.game import *
 
 #DEBUG_MODE[0] = False
 
-player = Player("uwu", chr="X", x=4, y=3)
+player = User("uwu", "X", 4, 3)
+player.setup_configs(["i", "t"], [inventory, config])
 
 house = Structure("stu", chr="&", x=1, y=4, sz_x=10, sz_y=10)
 house.generate_lines("-Y", Y_CORD=[2, 5], X_CORD=[1, 6])
@@ -25,6 +27,5 @@ cam = Camera("main", zone=scene, look=player, static=False)
 
 scene.add_child(node=house)
 scene.add_child(node=player)
-
 
 start_game_2d()

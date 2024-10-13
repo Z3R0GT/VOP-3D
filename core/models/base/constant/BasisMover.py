@@ -6,7 +6,7 @@ COMPONENTS_GENERIC_MOV_FA:list[str] = ["map", "stu"]
 COMPONENTS_GENERIC_MOV_CH:list[str] = ["obj"]
 DEFAULT_CONTROLLS:list[str]=['w', 's', 'a', 'd']
 
-class BasisMover(Vector, BasisTreeNode, Function):
+class BasisMover(Vector, BasisTreeNode):
     def __init__(self, name: str, 
                  chr:str, 
                  x:int, y:int,

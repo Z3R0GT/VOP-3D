@@ -1,22 +1,22 @@
 from time import sleep
 
-from .models.data.references import TPF
+from .data.references import TPF
 
 #Intefaz de usuario
-from .models.data.ui.buttons import * 
-from .models.data.ui.menu import *
-from .models.data.custom.Label import *
-from .models.data.ui.components.panel import *
+from .data.ui.buttons import * 
+from .data.ui.menu import *
+from .data.custom.Label import *
+from .data.ui.components.panel import *
 
 #2D para todos
-from .models.data.camera import *
-from .models.data.d2.mapa import *
-from .models.data.d2.structure import *
-from .models.data.d2.player import *
-from .models.data.d2.objects import *
+from .data.camera import *
+from .data.d2.mapa import *
+from .data.d2.structure import *
+from .data.d2.player import *
+from .data.d2.ObjectModel import *
 
 #Ambiente 2D
-from .models.data.d2.env import *
+from .data.d2.env import *
 
 
 

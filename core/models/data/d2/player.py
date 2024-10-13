@@ -7,16 +7,12 @@ from .interactive.stats import *
 from ..ui.menu import *
 from ..ui.buttons import *
 
-
-@final
 class Player(Skeleton, Stats):
     def __init__(self, name: str, chr: str, 
                  x: int, y: int, *,
-                 components: list[str] = ..., 
                  comment: str | None = None) -> None:
         super().__init__(name, chr, x, y, 
                          len(PLA_OBJ), "pla",
-                         components=components, 
                          comment=comment)
         super().__stats__()
         #TODO: transferir a su propio objeto        
@@ -25,18 +21,7 @@ class Player(Skeleton, Stats):
     def __key_normal(self, key):
         try:
             inp = key.char
-            
-            match inp:
-                case "i":
-                    #mata los procesos
-                    self.move("stop")
-                    PLAYING[0] = False
-                    #nombre reservado (menu_pause)
-                    ...
-                    #crea los menu :v
-                    
-                case _:
-                    self.mover(inp)
+            self.key_input(inp)
         except AttributeError:
             pass
         
@@ -51,7 +36,15 @@ class Player(Skeleton, Stats):
             if not PAUSING[0]:
                 self.setup_move("key")
                 self.key.start()
-
+                
+    def key_input(self, key):...
+    
+    
+    def setup_configs(self, lst_key:list[str], lst_func:list):
+        self.controll+=[i.lower() for i in lst_key]
+        self.config = lst_func
+        
+    
     #NOTE: ESTO SOLO PUEDE SER LLAMADO UNA VEZ!
     def setup_move(self, kind:Literal["key", "special", "all"]="all"):
         if kind == "all":
@@ -77,15 +70,5 @@ class Player(Skeleton, Stats):
         elif kind == "stop":
             self.key.stop()
         elif kind == "debug":
-            self.mover(input("dirección:\n>..."))
-       
-    @override     
-    def adder(self, node):
-        node = secure_type_one(node=node, abs="obj")
-        re = node.canEffect(self.stats)
-        print(node.name)
-        if re:
-            self.apply_effects(re)
-            return True
-        else:
-            return re
+            self.key_input(input("dirección:\n>..."))
+    

@@ -2,7 +2,6 @@ from types import EllipsisType
 
 from core.models.base.tools.maths import insert
 from core.models.data.d2.env import PAUSING, PLAYING
-
 from ....base.constant.BasisMover import *
 
 #NOTE: esta clase tiene por objetivo actuar como intermediario para aquellos nodos
@@ -75,9 +74,8 @@ class Skeleton(BasisMover):
     
     #NOTE: estas funciones puede ser sobre escrita... no hace falta documentar
     def mover(self, key:str):
-        key = key.lower()
         self.__caster__()
-        w, s, a, d = self.controll
+        w, s, a, d = [self.controll[i] for i in range (4)] 
         
         match key:
             case n if n == w:

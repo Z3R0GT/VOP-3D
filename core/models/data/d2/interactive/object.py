@@ -6,7 +6,7 @@
 from .Skeleton import *
 from ...references import OBJ_OBJ
 
-class Object(Skeleton):
+class Object(Skeleton, Function):
     def __init__(self, name: str, chr: str, 
                  x: int, y: int, *, 
                  can_move:bool=False,

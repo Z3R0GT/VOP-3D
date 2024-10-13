@@ -1,4 +1,4 @@
-from ...base.include.layout.BasisUI import MARK_SCAPE
+from ...base.include.layout.BasisUI import MARK_SCAPE, Vector
 from ...base.constant.function import *
 from ...base.include.BasisTreeNode import *
 
@@ -27,7 +27,7 @@ def __back__(*args, **kwargs):
     ...
     
 COMPONENTS_BTN_FA:list[str] = ["pnl", "men"]
-class Buttons(Function, BasisTreeNode):
+class Buttons(Vector, Function, BasisTreeNode):
     def __init__(self, name: str, 
                  text: str,
                  x: int, y: int, 
@@ -43,10 +43,10 @@ class Buttons(Function, BasisTreeNode):
                                  "CONTINUE", 
                                  "CUSTOM"]="CUSTOM",
                 action=...) -> None:
-        super().__init__(name, text, 
+        super().__init__(name,
                          len(BUTTONS_OBJ), "btn", 
-                         x, y, 
                          comment)
+        super().__vector__(chr=text, x=x, y=y)
         super().__child_node__(COMPONENTS_BTN_FA)
         super().__func__(action)
         

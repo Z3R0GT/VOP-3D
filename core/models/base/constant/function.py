@@ -4,7 +4,7 @@ def _demo(*args, **kwargs):
 class Function:
     def __func__(self, func):
         self.var:dict  = {}
-        if func == ...:
+        if type(func) == type(...):
             self.action = _demo
         else:
             self.action = func
